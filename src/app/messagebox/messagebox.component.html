@@ -1,0 +1,40 @@
+<div class="modal-header">
+  <h5 class="modal-title">
+    {{settings.title}}
+  </h5>
+</div>
+<div class="modal-body text-center">
+  <p class="text-center" *ngIf="settings.type == 0">
+    <fa-icon [icon]="faExclamationTriangle" class="fa-2x text-warning"></fa-icon>
+  </p>
+
+  <p class="text-center" *ngIf="settings.type == 1">
+    <fa-icon [icon]="faCheckCircle" class="fa-2x text-success"></fa-icon>
+  </p>
+
+  <p class="text-center" *ngIf="settings.type == 2">
+    <fa-icon [icon]="faInfoCircle" class="fa-2x text-info"></fa-icon>
+  </p>
+
+  {{settings.message}}
+</div>
+<div class="modal-footer">
+  <div *ngIf="settings.type == 0">
+    <button class="btn btn-sm btn-danger mr-2" (click)="cancel()">
+      Cancel
+    </button>
+    <button class="btn btn-sm btn-success" (click)="ok()">
+      Continue
+    </button>
+  </div>
+  <div *ngIf="settings.type == 1">
+    <button class="btn btn-sm btn-success" (click)="ok()">
+      Ok
+    </button>
+  </div>
+  <div *ngIf="settings.type == 2">
+    <button class="btn btn-sm btn-secondary" (click)="close()">
+      Close
+    </button>
+  </div>
+</div>

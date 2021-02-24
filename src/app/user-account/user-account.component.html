@@ -1,0 +1,95 @@
+<!-- New Item Form -->
+<div class="card rounded">
+  <div class="card-header bg-white rounded">
+    <h5 class="text-muted text-center" *ngIf="isNewItemMode">
+      Create User Account
+    </h5>
+    <h5 class="text-muted text-center" *ngIf="isEditMode">
+      Edit User Account
+    </h5>
+  </div>
+  <div class="card-body">
+    <form #userForm="ngForm">
+      <div class="form-group text-center">
+        <input type="text" name="surname" class="form-control form-control-custom" placeholder="Surname"
+          [(ngModel)]="userProfile.surname" required autocomplete="off" />
+        <span class="error">
+          {{formErrors.surname}}
+        </span>
+      </div>
+      <div class="form-group text-center">
+        <input type="text" name="Othernames" class="form-control form-control-custom" placeholder="Othernames"
+          [(ngModel)]="userProfile.othernames" required autocomplete="off" />
+        <span class="error">
+          {{formErrors.othernames}}
+        </span>
+      </div>
+      <div class="form-group text-center" *ngIf="userProfile && userProfile.userType !== 'superadmin'">
+        <select name="userType" class="form-control form-control-custom custom-select"
+          [(ngModel)]="userProfile.userType" required>
+          <option [value]="null">User Role</option>
+          <option value="admin">
+            Admin
+          </option>
+          <option value="staff">
+            Chef
+          </option>
+        </select>
+        <span class="error">
+          {{formErrors.userType}}
+        </span>
+      </div>
+      <div class="form-group text-center">
+        <select name="gender" class="form-control form-control-custom custom-select" [(ngModel)]="userProfile.gender"
+          required>
+          <option [value]="null">Gender</option>
+          <option value="male">
+            Male
+          </option>
+          <option value="female">
+            Female
+          </option>
+        </select>
+        <span class="error">
+          {{formErrors.gender}}
+        </span>
+      </div>
+      <div class="form-group text-center">
+        <input type="email" name="email" class="form-control form-control-custom" placeholder="Email Address"
+          [(ngModel)]="userProfile.email" required email autocomplete="off" />
+        <span class="error">
+          {{formErrors.email}}
+        </span>
+      </div>
+      <div class="form-group text-center">
+        <input type="password" name="password" class="form-control form-control-custom" placeholder="Password"
+          [(ngModel)]="userProfile.password" required *ngIf="isNewItemMode" autocomplete="off" />
+        <input type="password" name="password" class="form-control form-control-custom" placeholder="Reset password"
+          [(ngModel)]="userProfile.password" *ngIf="isEditMode" autocomplete="off" />
+        <span class="error">
+          {{formErrors.password}}
+        </span>
+      </div>
+
+      <div class="form-group text-center">
+        <button class="btn btn-success btn-rounded" [disabled]="!userForm.form.valid" (click)="saveData()"
+          *ngIf="isNewItemMode">
+          Create Account
+        </button>
+
+        <button class="btn btn-success btn-rounded" [disabled]="!userForm.form.valid" (click)="updateData()"
+          *ngIf="isEditMode">
+          Update Account
+        </button>
+
+        <div class="text-info text-center mt-2" *ngIf="isProcessing">
+          <span>
+            <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>
+            processing request
+          </span>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- New Item Form -->

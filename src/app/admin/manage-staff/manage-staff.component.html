@@ -1,0 +1,17 @@
+<div class="mb-3">
+  <div class="d-flex justify-content-between align-items-center mb-0 flex-wrap">
+    <h5 class="mr-1 mb-0 text-muted font-style-italic my-2">
+      <fa-icon [icon]="faUsers"></fa-icon>
+      Staffs
+    </h5>
+
+    <button class="btn btn-warning btn-rounded" (click)="setViewMode(2)" [disabled]="isNewItemMode || isEditMode">
+      <fa-icon [icon]="faPlusCircle"></fa-icon>
+      Enroll Staff
+    </button>
+  </div>
+
+  <hr class="socket mt-1" />
+  <app-staff [isNewItemMode]="isNewItemMode" [isEditMode]="isEditMode" [isMainMode]="isMainMode"
+    (changeViewMode)="setViewMode($event)"></app-staff>
+</div>

@@ -1,0 +1,310 @@
+<!-- New Item Form -->
+<div class="card rounded">
+  <div class="card-header bg-white rounded">
+    <h5 class="text-muted text-center" *ngIf="isNewItemMode">
+      Staff Enrollment
+    </h5>
+    <h5 class="text-muted text-center" *ngIf="isEditMode">
+      Edit Staff Information
+    </h5>
+  </div>
+  <div class="card-body">
+    <form #newForm="ngForm">
+      <div class="row">
+        <div class="col-12 col-lg-3">
+          <div class="text-center">
+            <div class="passport">
+              <img src="/assets/avatar.png" alt="passport" *ngIf="!isEditMode && !selectedImage">
+              <img [src]="selectedImage.src" alt="passport" *ngIf="!isEditMode && selectedImage">
+              <img [src]="staffProfile.imageUrl" alt="passport" *ngIf="isEditMode && staffProfile.imageUrl">
+              <img src="/assets/avatar.png" alt="passport" *ngIf="isEditMode && !staffProfile.imageUrl">
+            </div>
+          </div>
+          <div class="text-center" [hidden]="isEditMode">
+            <input type="file" name="fileToUpload" id="file-to-upload" [hidden]="true"
+              accept="image/jpg,image/jpeg,image/png" #fileInput (change)="onFileChanged(fileInput)">
+            <label for="file-to-upload" class="btn btn-warning">
+              <fa-icon [icon]="faFolder"></fa-icon>
+              Browse folder
+            </label>
+          </div>
+          <div class="alert alert-danger" *ngIf="selectedImage && selectedImage.hasSizeError">
+            <span>
+              Your file size is {{selectedImage.fileSize}}kb and the allowed file size is between
+              {{selectedImage.minFileSize}}kb to {{selectedImage.maxFileSize}}kb
+            </span>
+          </div>
+        </div>
+        <div class="col-12 col-lg-9">
+          <div class="row">
+            <div class="col-12 col-lg-4">
+              <div class="form-group text-center">
+                <label for="surname" *ngIf="isEditMode">
+                  Surname
+                </label>
+                <input type="text" name="surname" id="surname" class="form-control form-control-custom"
+                  placeholder="Surname" [(ngModel)]="staffProfile.surname" required autocomplete="off" />
+                <span class="error" *ngIf="formErrors.surname">
+                  {{formErrors.surname.error}}
+                </span>
+              </div>
+            </div>
+            <div class="col-12 col-lg-4">
+              <div class="form-group text-center">
+                <label for="firstname" *ngIf="isEditMode">
+                  Firstname
+                </label>
+                <input type="text" name="firstname" id="firstname" class="form-control form-control-custom"
+                  placeholder="Firstname" [(ngModel)]="staffProfile.firstname" required autocomplete="off" />
+                <span class="error" *ngIf="formErrors.firstname">
+                  {{formErrors.firstname.error}}
+                </span>
+              </div>
+            </div>
+            <div class="col-12 col-lg-4">
+              <div class="form-group text-center">
+                <label for="othername" *ngIf="isEditMode">
+                  Othername
+                </label>
+                <input type="text" name="othername" id="othername" class="form-control form-control-custom"
+                  placeholder="Othername" [(ngModel)]="staffProfile.othername" required autocomplete="off" />
+                <span class="error" *ngIf="formErrors.othername">
+                  {{formErrors.othername.error}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12 col-lg-6">
+              <div class="form-group text-center">
+                <label for="gender" *ngIf="isEditMode">
+                  Gender
+                </label>
+                <select name="gender" id="gender" class="form-control form-control-custom custom-select"
+                  [(ngModel)]="staffProfile.gender" required>
+                  <option [value]="null">Gender</option>
+                  <option value="female">
+                    female
+                  </option>
+                  <option value="male">
+                    male
+                  </option>
+                </select>
+                <span class="error" *ngIf="formErrors.gender">
+                  {{formErrors.gender.error}}
+                </span>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <div class="form-group text-center">
+                <label for="staff-class" *ngIf="isEditMode">
+                  Staff Class
+                </label>
+                <select name="classId" id="staff-class" class="form-control form-control-custom custom-select"
+                  [(ngModel)]="staffProfile.classId" required>
+                  <option [value]="null">Select Staff Class</option>
+                  <option [value]="class.id" *ngFor="let class of staffClasses">
+                    {{class.name}}
+                  </option>
+                </select>
+                <span class="error" *ngIf="formErrors.classId">
+                  {{formErrors.classId.error}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12 col-lg-6">
+              <div class="form-group text-center">
+                <label for="dept" *ngIf="isEditMode">
+                  Department
+                </label>
+                <select name="deptId" id="dept" class="form-control form-control-custom custom-select"
+                  [(ngModel)]="staffProfile.deptId" required (change)="setDeginations()">
+                  <option [value]="null">Select Department</option>
+                  <option [value]="dept.id" *ngFor="let dept of departments">
+                    {{dept.name}}
+                  </option>
+                </select>
+                <span class="error" *ngIf="formErrors.deptId">
+                  {{formErrors.deptId.error}}
+                </span>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <div class="form-group text-center">
+                <label for="dsg" *ngIf="isEditMode">
+                  Designation
+                </label>
+                <select name="dsgId" id="dsg" class="form-control form-control-custom custom-select"
+                  [(ngModel)]="staffProfile.dsgId" required>
+                  <option [value]="null">Select Designation</option>
+                  <option [value]="dsg.id" *ngFor="let dsg of designations">
+                    {{dsg.name}}
+                  </option>
+                </select>
+                <span class="error" *ngIf="formErrors.dsgId">
+                  {{formErrors.dsgId.error}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12 col-lg-4">
+              <div class="form-group text-center">
+                <label for="level" *ngIf="isEditMode">
+                  Level
+                </label>
+                <select name="level" id="level" class="form-control form-control-custom custom-select"
+                  [(ngModel)]="staffProfile.level" required>
+                  <option [value]="null">Select Level</option>
+                  <option [value]="level.id" *ngFor="let level of levels">
+                    {{level.id}}
+                  </option>
+                </select>
+                <span class="error" *ngIf="formErrors.level">
+                  {{formErrors.level.error}}
+                </span>
+              </div>
+            </div>
+            <div class="col-12 col-lg-4">
+              <div class="form-group text-center">
+                <label for="grade" *ngIf="isEditMode">
+                  Grade
+                </label>
+                <select name="grade" class="form-control form-control-custom custom-select"
+                  [(ngModel)]="staffProfile.grade" required>
+                  <option [value]="null">Select Grade</option>
+                  <option [value]="grade.id" *ngFor="let grade of grades">
+                    {{grade.id}}
+                  </option>
+                </select>
+                <span class="error" *ngIf="formErrors.grade">
+                  {{formErrors.grade.error}}
+                </span>
+              </div>
+            </div>
+            <div class="col-12 col-lg-4">
+              <div class="form-group text-center">
+                <label for="salary-structure" *ngIf="isEditMode">
+                  Salary Structure
+                </label>
+                <select name="salaryStructure" id="salary-structure"
+                  class="form-control form-control-custom custom-select" [(ngModel)]="staffProfile.salaryStrId"
+                  required>
+                  <option [value]="null">Salary Structure</option>
+                  <option [value]="structure.id" *ngFor="let structure of salaryStructures">
+                    {{structure.shortName}}
+                  </option>
+                </select>
+                <span class="error" *ngIf="formErrors.salaryStrId">
+                  {{formErrors.salaryStrId.error}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12 col-lg-6">
+              <div class="form-group text-center">
+                <label for="date-of-emp" *ngIf="isEditMode">
+                  Date of employment
+                </label>
+                <div class="input-group">
+                  <input type="text" id="date-of-emp" name="dateOfEmp" class="form-control form-control-custom"
+                    placeholder="Date of employment" [(ngModel)]="dateOfEmp" required autocomplete="off" ngbDatepicker
+                    #d1="ngbDatepicker" readonly />
+
+                  <div class="input-group-append btn-rounded">
+                    <label (click)="d1.toggle()" class="input-group-text">
+                      <fa-icon [icon]="faCalendar" class="text-info"></fa-icon>
+                    </label>
+                  </div>
+                </div>
+
+                <span class="error" *ngIf="formErrors.dateOfEmp">
+                  {{formErrors.dateOfEmp.error}}
+                </span>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <div class="form-group text-center">
+                <label for="date-of-ret" *ngIf="isEditMode">
+                  Date Of Retirement
+                </label>
+                <div class="input-group">
+                  <input type="text" name="dateOfRet" id="date-of-ret" class="form-control form-control-custom"
+                    placeholder="Date of retirement" [(ngModel)]="dateOfRet" required autocomplete="off" ngbDatepicker
+                    #d2="ngbDatepicker" readonly />
+                  <div class="input-group-append">
+                    <label class="input-group-text" (click)="d2.toggle()">
+                      <fa-icon [icon]="faCalendar" class="text-info"></fa-icon>
+                    </label>
+                  </div>
+                </div>
+                <span class="error" *ngIf="formErrors.dateOfRet">
+                  {{formErrors.dateOfRet.error}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12 col-lg-6">
+              <div class="form-group text-center">
+                <label for="bank" *ngIf="isEditMode">
+                  Bank
+                </label>
+                <select name="bankId" id="bank" class="form-control form-control-custom custom-select"
+                  [(ngModel)]="staffProfile.bankId" required>
+                  <option [value]="null">Select bank</option>
+                  <option [value]="bank.id" *ngFor="let bank of banks">
+                    {{bank.name}}
+                  </option>
+                </select>
+                <span class="error" *ngIf="formErrors.bank">
+                  {{formErrors.bank.error}}
+                </span>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <div class="form-group text-center">
+                <label for="account-no" *ngIf="isEditMode">
+                  Account No.
+                </label>
+                <input type="text" name="accountNo" id="account-no" class="form-control form-control-custom"
+                  placeholder="Account No." [(ngModel)]="staffProfile.accountNo" required autocomplete="off" maxlength="10" />
+                <span class="error" *ngIf="formErrors.accountNo">
+                  {{formErrors.accountNo.error}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group text-center">
+        <button class="btn btn-success btn-rounded" [disabled]="!newForm.form.valid || !staffProfile.fileToUpload" (click)="saveData()"
+          *ngIf="isNewItemMode">
+          Save Enrollment
+        </button>
+
+        <button class="btn btn-success btn-rounded" [disabled]="!newForm.form.valid"
+          (click)="updateData()" *ngIf="isEditMode">
+          Update Enrollment
+        </button>
+
+        <div class="text-info text-center mt-2" *ngIf="isProcessing">
+          <span>
+            <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>
+            processing request
+          </span>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- New Item Form -->

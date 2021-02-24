@@ -1,0 +1,167 @@
+<div class="row flex-wrap-reverse">
+  <div class="col-12 mb-2" [ngClass]="{'col-md-7 col-lg-8 col-xl-9': !isMainMode}">
+    <div class="card">
+      <div class="card-header bg-white">
+        <div>
+          <form class="w-100">
+            <div class="form-control form-control-custom d-flex">
+              <input type="search" name="searchquery" placeholder="Search department by name." [(ngModel)]="searchquery"
+                autocomplete="off" />
+              <button class="btn my-0 py-0" (click)="onSearch()">
+                <fa-icon [icon]="faSearch"></fa-icon>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="card-body scrollable">
+        <table class="table table-striped table-hover table-md">
+          <thead class="text-muted">
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Designations</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let dept of departments; index as i;">
+              <td>{{i+1}}.</td>
+              <td class="text-capitalize">
+
+                <div class="d-flex align-items-center justify-content-between">
+                  <div>
+                    <input type="text" class="form-control form-control-custom" placeholder="Name of department"
+                      [(ngModel)]="tempItem.name" *ngIf="dept.inEditMode" (blur)="updateData(dept)">
+                    <label class="mb-0 pb-0" *ngIf="!dept.inEditMode">
+                      {{dept.name}}
+                    </label>
+                  </div>
+                  <div class="dropdown">
+                    <label class="btn btn-sm btn-light" data-toggle="dropdown">
+                      <fa-icon [icon]="faEllipsisH"></fa-icon>
+                    </label>
+                    <div class="dropdown-menu dropdown-menu-right">
+                      <a class="dropdown-item" (click)="switchToEditMode(dept)">
+                        <span class="d-flex align-items-center">
+                          <fa-icon [icon]="faEdit" class="text-info"></fa-icon>
+                          <span class="ml-2 d-inline-block">
+                            <span class="d-block">
+                              <small>
+                                Edit Department
+                              </small>
+                            </span>
+                            <span class="d-block">
+                              <small>
+                                Change this department name
+                              </small>
+                            </span>
+                          </span>
+                        </span>
+                      </a>
+                      <a class="dropdown-item" (click)="onDelete(dept)">
+                        <span class="d-flex align-items-center">
+                          <fa-icon [icon]="faTrash" class="text-danger"></fa-icon>
+                          <span class="ml-2 d-inline-block">
+                            <span class="d-block">
+                              <small>
+                                Delete department
+                              </small>
+                            </span>
+                            <span class="d-block">
+                              <small>
+                                Remove this department
+                              </small>
+                            </span>
+                          </span>
+                        </span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <ul class="list-group">
+                  <li class="list-group-item" *ngFor="let dsg of dept.Designations; index as j">
+                    <div class="d-flex align-items-center justify-content-between">
+                      <div>
+                        <input type="text" class="form-control form-control-custom" placeholder="Name of designation"
+                          autocomplete="off" [(ngModel)]="tempItem.name" *ngIf="dsg.inEditMode" (blur)="updateDsg(dsg)"
+                          autofocus="true" />
+                        <label class="mb-0 p-0" *ngIf="!dsg.inEditMode">
+                          {{j+1}}. {{dsg.name}}
+                        </label>
+                      </div>
+                      <div class="dropdown">
+                        <label class="btn btn-sm btn-light" data-toggle="dropdown">
+                          <fa-icon [icon]="faEllipsisH"></fa-icon>
+                        </label>
+                        <div class="dropdown-menu dropdown-menu-right">
+                          <a class="dropdown-item" (click)="switchToEditMode(dsg)">
+                            <span class="d-flex align-items-center">
+                              <fa-icon [icon]="faEdit" class="text-info"></fa-icon>
+                              <span class="ml-2 d-inline-block">
+                                <span class="d-block">
+                                  <small>Edit designation</small>
+                                </span>
+                                <span class="d-block">
+                                  <small>Change this degination name</small>
+                                </span>
+                              </span>
+                            </span>
+                          </a>
+                          <a class="dropdown-item" (click)="onDeleteDsg(dsg)">
+                            <span class="d-flex align-items-center">
+                              <fa-icon [icon]="faTrash" class="text-danger"></fa-icon>
+                              <span class="ml-2 d-inline-block">
+                                <span class="d-block">
+                                  <small>Delete designation</small>
+                                </span>
+                                <span class="d-block">
+                                  <small>Remove this degination from department</small>
+                                </span>
+                              </span>
+                            </span>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p *ngIf="isLoading" class="text-center mt-2">
+          <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>
+          Loading
+        </p>
+
+        <button *ngIf="hasMoreData" class="btn btn-sm btn-outline-info" (click)=loadData(currentPage+1)>
+          Load More...
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form -->
+  <div class="col-12 col-md-5 col-lg-4 col-xl-3 mb-2 form-container" [hidden]="!isNewItemMode && !isEditMode">
+    <div class="text-right" (click)="onBackToMain()">
+      <button class="btn btn-sm mb-1">
+        <fa-icon [icon]="faTimes"></fa-icon>
+      </button>
+    </div>
+    <div class="mb-2">
+      <app-department-form [isNewItemMode]="isNewItemMode" [isEditMode]="isEditMode" [deptProfile]="deptProfile"
+        (newItem)="onNewItem($event)" (itemUpdate)="onUpdate($event)">
+      </app-department-form>
+    </div>
+
+    <div>
+      <app-designation-form [isNewItemMode]="isNewItemMode" [isEditMode]="isEditMode" [dsgProfile]="dsgProfile"
+        (newItem)="onNewDsgItem($event)" (itemUpdate)="onUpdate($event)">
+      </app-designation-form>
+    </div>
+  </div>
+  <!-- Form -->
+</div>

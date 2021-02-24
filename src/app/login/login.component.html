@@ -1,0 +1,73 @@
+<div class="d-flex justify-content-between p-1">
+  <div>
+    <nav class="breadcrumb bg-transparent p-0">
+      <li class="breadcrumb-item active">
+        <fa-icon [icon]="faSignInAlt" class="mr-2"></fa-icon>
+        Login
+      </li>
+    </nav>
+  </div>
+  <!-- <div class="ml-auto">
+    <a routerLink="/register" class="btn btn-sm btn-primary btn-rounded">
+      <fa-icon [icon]="faUserPlus" class="mr-1"></fa-icon>
+      Register
+    </a>
+  </div> -->
+</div>
+
+<div class="col-12 col-sm-7 col-md-6 col-lg-5 col-xl-4 mx-auto my-5 p-1">
+  <form #loginForm="ngForm">
+    <div class="card rounded">
+      <div class="card-body">
+        <div class="text-center mb-4">
+          <img src="/assets/imgs/logo.png" alt="kitchen logo" class="logo">
+        </div>
+
+        <h5 class="title text-center text-muted">
+          Imo State Polytechnic Payroll System
+        </h5>
+
+        <div class="mt-3 mb-2" *ngIf="isProcessing">
+          <div class="progress">
+            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" style="width:100%">
+              authenticating...
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group mt-3">
+          <div class="d-flex form-control form-control-custom">
+            <span class="mr-2 text-muted">
+              <fa-icon [icon]="faEnvelope"></fa-icon>
+            </span>
+            <input type="email" placeholder="Email" name="email" id="email" autocomplete="off" #email="ngModel"
+              [(ngModel)]="loginModel.email" email required autocomplete="off" />
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="d-flex form-control form-control-custom">
+            <span class="mr-2 text-muted">
+              <fa-icon [icon]="faLock"></fa-icon>
+            </span>
+            <input type="password" placeholder="Password" name="password" #password="ngModel" autocomplete="off"
+              [(ngModel)]="loginModel.password" required autocomplete="off" />
+          </div>
+
+        </div>
+        <div class="form-group text-center">
+          <button class="btn btn-rounded btn-outline-success" (click)="onLogin()" [disabled]="!loginForm.form.valid">
+            Login
+            <fa-icon [icon]="faSignInAlt"></fa-icon>
+          </button>
+        </div>
+        <div class="form-group text-center">
+          <a routerLink="/forgotten/password" class="d-block">
+            <small>
+              Forgot your password?
+            </small>
+          </a>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

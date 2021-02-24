@@ -1,0 +1,206 @@
+<div class="d-flex justify-content-between p-1">
+  <div>
+    <nav class="breadcrumb bg-transparent p-0">
+      <li class="breadcrumb-item active">
+        <fa-icon [icon]="faUserPlus" class="mr-2"></fa-icon>
+        Register
+      </li>
+    </nav>
+  </div>
+  <div class="ml-auto">
+    <a routerLink="/login" class="btn btn-sm btn-primary btn-rounded">
+      <fa-icon [icon]="faSignInAlt" class="mr-1"></fa-icon>
+      Login
+    </a>
+  </div>
+</div>
+
+<div class="my-5">
+  <div class="col-12 col-sm-10 col-md-8 col-lg-7 mx-auto px-0">
+    <div class="card">
+      <div class="card-header bg-white border-0 mb-0 pb-0">
+        <h5 class="card-title text-muted d-flex align-items-center">
+          <fa-icon [icon]="faUserPlus" class="mr-2 text-primary"></fa-icon>
+          <span>Create Account</span>
+        </h5>
+      </div>
+      <div class="card-body">
+        <form #registerForm="ngForm">
+          <fieldset>
+            <legend class="text-muted mb-0">Personal Information</legend>
+            <hr class="socket mt-0">
+            <div class="row">
+              <div class="col-12 col-md-6">
+                <div class="form-group">
+                  <input type="text" class="form-control form-control-custom" placeholder="Surname" name="surname"
+                    [(ngModel)]="userProfile.Citizen.surname" autocomplete="off" required>
+                  <div class="text-center error" *ngIf="formErrors.surname">
+                    <small>
+                      {{formErrors.surname}}
+                    </small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-6">
+                <div class="form-group">
+                  <input type="text" class="form-control form-control-custom" placeholder="Other Names"
+                    name="othernames" [(ngModel)]="userProfile.Citizen.othernames" autocomplete="off" required>
+                  <div class="text-center error" *ngIf="formErrors.othernames">
+                    <small>
+                      {{formErrors.othernames}}
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="row">
+              <div class="col-12 col-md-6">
+                <div class="form-group">
+                  <input type="text" class="form-control form-control-custom" placeholder="Date of birth" name="surname"
+                    [(ngModel)]="userProfile.Citizen.dateOfBirth" autocomplete="off" required>
+                  <div class="text-center error" *ngIf="formErrors.dateOfBirth">
+                    <small>
+                      {{formErrors.dateOfBirth}}
+                    </small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-6">
+                <div class="form-group">
+                  <input type="text" class="form-control form-control-custom" placeholder="Occupation" name="othernames"
+                    [(ngModel)]="userProfile.Citizen.occupation" autocomplete="off" required>
+                  <div class="text-center error" *ngIf="formErrors.occupation">
+                    <small>
+                      {{formErrors.occupation}}
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="row">
+              <div class="col-12 col-md-6">
+                <div class="form-group">
+                  <input type="email" class="form-control form-control-custom" placeholder="Email Address" name="email"
+                    [(ngModel)]="userProfile.email" autocomplete="off" required email>
+                  <div class="text-center error" *ngIf="formErrors.email">
+                    <small>
+                      {{formErrors.email}}
+                    </small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-6">
+                <div class="form-group">
+                  <input type="password" class="form-control form-control-custom" placeholder="Password" name="password"
+                    [(ngModel)]="userProfile.password" autocomplete="off" required>
+                  <div class="text-center error" *ngIf="formErrors.password">
+                    <small>
+                      {{formErrors.password}}
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-12 col-md-6 mx-auto">
+                <div class="form-group">
+                  <input type="tel" name="mobile" [(ngModel)]="userProfile.Citizen.mobile" placeholder="Mobile"
+                    maxlength="15" required class="form-control form-control-custom" />
+                  <div class="text-center error" *ngIf="formErrors.mobile">
+                    <small>
+                      {{formErrors.mobile}}
+                    </small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 mx-auto">
+                <div class="form-group">
+                  <select class="form-control form-control-custom custom" name="gender"
+                    [(ngModel)]="userProfile.Citizen.gender" required>
+                    <option [value]="null">Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                  </select>
+
+                  <div class="text-center error" *ngIf="formErrors.gender">
+                    <small>
+                      {{formErrors.gender}}
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-12 col-md-6 mx-auto">
+                <div class="form-group">
+                  <select class="form-control form-control-custom custom" name="originId"
+                    [(ngModel)]="userProfile.Citizen.originId" required>
+                    <option [value]="null">State of origin</option>
+                  </select>
+
+                  <div class="text-center error" *ngIf="formErrors.originId">
+                    <small>
+                      {{formErrors.originId}}
+                    </small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 mx-auto">
+                <div class="form-group">
+                  <select class="form-control form-control-custom custom" name="residentId"
+                    [(ngModel)]="userProfile.Citizen.residentId" required>
+                    <option [value]="null">State of resident</option>
+                  </select>
+
+                  <div class="text-center error" *ngIf="formErrors.residentId">
+                    <small>
+                      {{formErrors.residentId}}
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-12 mx-auto">
+                <div class="form-group">
+                  <textarea class="form-control" name="address"
+                    [(ngModel)]="userProfile.Citizen.address" placeholder="Resident address" required></textarea>
+                  <div class="text-center error" *ngIf="formErrors.address">
+                    <small>
+                      {{formErrors.address}}
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-12 text-center">
+                <button class="btn btn-secondary btn-rounded mr-5" (click)="onBack()">
+                  <fa-icon [icon]="faChevronCircleLeft"></fa-icon>
+                  Back
+                </button>
+                <button class="btn btn-primary btn-rounded" [disabled]="!registerForm.form.valid" (click)="register()">
+                  Continue
+                  <fa-icon [icon]="faCheckCircle"></fa-icon>
+                </button>
+              </div>
+            </div>
+          </fieldset>
+
+          <div class="text-center mt-2" *ngIf="isProcessing">
+            <fa-icon [icon]="faSpinner" [spin]="true" class="mr-1"></fa-icon>
+            Processing request
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

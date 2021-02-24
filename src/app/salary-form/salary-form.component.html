@@ -1,0 +1,46 @@
+<!-- New Item Form -->
+<div class="card rounded">
+  <div class="card-header bg-white rounded">
+    <h5 class="text-muted text-center">
+      Edit Salary
+    </h5>
+  </div>
+  <div class="card-body">
+    <form #newForm="ngForm">
+      <div class="form-group text-center mb-1">
+        <select name="status" class="form-control form-control-custom" [(ngModel)]="salary.status">
+          <option [value]="null">
+            Salary Status
+          </option>
+          <option value="active">
+            Active
+          </option>
+          <option value="dormant">
+            Dormant
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group text-center mb-1" *ngFor="let misc of salary.SalaryMiscellanous;index as i">
+        <label [for]="'misc-' + misc.id" class="small mb-1">
+          {{salary.SalaryMiscellanous[i].Miscellanou.title}}
+        </label>
+        <input type="text" [id]="'misc-' + misc.id" [name]="'misc' + misc.id" [(ngModel)]="salary.SalaryMiscellanous[i].subTotalAmount" class="form-control form-control-custom" required/>
+      </div>
+
+      <div class="form-group text-center mb-1">
+        <button class="btn btn-success btn-rounded" [disabled]="!newForm.form.valid" (click)="updateData()">
+          Update Salary
+        </button>
+
+        <div class="text-info text-center mt-2" *ngIf="isProcessing">
+          <span>
+            <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>
+            processing request
+          </span>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- New Item Form -->

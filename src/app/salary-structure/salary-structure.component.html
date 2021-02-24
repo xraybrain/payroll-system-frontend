@@ -1,0 +1,131 @@
+<div class="row flex-wrap-reverse">
+  <div class="col-12 mb-2" [hidden]="!isMainMode">
+    <div class="my-2">
+      <form class="w-100">
+        <div class="form-control form-control-custom d-flex">
+          <input type="search" name="searchquery" placeholder="Search by name or abbreviation."
+            [(ngModel)]="searchquery" autocomplete="off" />
+          <button class="btn my-0 py-0" (click)="onSearch()">
+            <fa-icon [icon]="faSearch"></fa-icon>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="card shadow rounded mb-4" *ngFor="let structure of structures; index as i">
+      <div class="card-header">
+        <div class="d-flex justify-content-between align-items-center">
+          <h6 *ngIf="!structure.inEditMode" class="card-title mb-0 pb-0 text-uppercase">
+            {{structure.name}} ({{structure.shortName}})
+          </h6>
+          <div *ngIf="structure.inEditMode">
+            <input type="text" class="form-control form-control-custom my-1" placeholder="Name of salary structure"
+              [(ngModel)]="tempStructure.name">
+            <input type="text" class="form-control form-control-custom my-1" placeholder="Abbreviation"
+              [(ngModel)]="tempStructure.shortName">
+            <div class="text-center">
+              <button class="btn btn-danger btn-rounded mx-1" (click)="cancelEditMode(structure)">
+                <fa-icon [icon]="faTimes"></fa-icon>
+                Cancel
+              </button>
+              <button class="btn btn-success btn-rounded mx-1"
+                [disabled]="!tempStructure.name || !tempStructure.shortName" (click)="updateData(structure)">
+                Update
+                <fa-icon [icon]="faChevronCircleRight"></fa-icon>
+              </button>
+            </div>
+          </div>
+          <div class="dropdown">
+            <label class="btn btn-light" data-toggle="dropdown">
+              <fa-icon [icon]="faEllipsisH"></fa-icon>
+            </label>
+            <div class="dropdown-menu dropdown-menu-right">
+              <label class="dropdown-item" (click)="switchToEditMode(structure)">
+                <div class="d-flex align-items-center">
+                  <span class="mr-2">
+                    <fa-icon [icon]="faEdit" class="text-info"></fa-icon>
+                  </span>
+                  <small>
+                    <span class="d-block">Edit details</span>
+                    <span class="d-block">
+                      Change this salary structure details
+                    </span>
+                  </small>
+                </div>
+              </label>
+              <label class="dropdown-item" (click)="onDelete(structure)">
+                <div class="d-flex align-items-center">
+                  <span class="mr-2">
+                    <fa-icon [icon]="faTrash" class="text-danger"></fa-icon>
+                  </span>
+                  <small>
+                    <span class="d-block">Delete salary structure</span>
+                    <span class="d-block">
+                      Remove this salary structure completely
+                    </span>
+                  </small>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body scrollable p-1">
+        <table class="table small table-hover table-bordered">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>1</th>
+              <th>2</th>
+              <th>3</th>
+              <th>4</th>
+              <th>5</th>
+              <th>6</th>
+              <th>7</th>
+              <th>8</th>
+              <th>9</th>
+              <th>10</th>
+              <th>11</th>
+              <th>12</th>
+              <th>13</th>
+              <th>14</th>
+              <th>15</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of normalizeList(structure.SalaryStructureLists); index as j">
+              <td>{{j+1}}.</td>
+              <td *ngFor="let column of row">
+                {{column.annualSalary}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div>
+      <p *ngIf="isLoading" class="text-center mt-2">
+        <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>
+        Loading
+      </p>
+
+      <button *ngIf="hasMoreData" class="btn btn-sm btn-outline-info" (click)=loadData(currentPage+1)>
+        Load More...
+      </button>
+    </div>
+  </div>
+
+  <!-- Form -->
+  <div class="col-12 mb-2 form-container" [hidden]="!isNewItemMode && !isEditMode">
+    <div class="text-right" (click)="onBackToMain()">
+      <button class="btn btn-sm mb-1">
+        <fa-icon [icon]="faTimes"></fa-icon>
+      </button>
+    </div>
+    <app-salary-structure-form [isNewItemMode]="isNewItemMode" [isEditMode]="isEditMode"
+      [structureProfile]="structureProfile" (newItem)="onNewItem($event)" (itemUpdate)="onUpdate($event)">
+    </app-salary-structure-form>
+  </div>
+  <!-- Form -->
+</div>

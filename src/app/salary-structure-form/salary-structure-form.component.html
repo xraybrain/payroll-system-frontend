@@ -1,0 +1,104 @@
+<!-- New Item Form -->
+<div class="card rounded">
+  <div class="card-header bg-white rounded">
+    <h5 class="text-muted text-center" *ngIf="isNewItemMode">
+      Upload new salary structure
+    </h5>
+    <h5 class="text-muted text-center" *ngIf="isEditMode">
+      Edit salary structure
+    </h5>
+  </div>
+  <div class="card-body">
+    <form #newForm="ngForm">
+      <div class="row">
+        <div class="col-12 col-lg-9 mx-auto">
+          <div class="row">
+            <div class="col-12 col-lg-4">
+              <div class="form-group text-center">
+                <input type="text" name="name" id="name" class="form-control form-control-custom"
+                  placeholder="Name of Salary Structure" [(ngModel)]="structureProfile.name" required
+                  autocomplete="off" />
+                <span class="error" *ngIf="formErrors.name">
+                  {{formErrors.name.error}}
+                </span>
+              </div>
+            </div>
+            <div class="col-12 col-lg-4">
+              <div class="form-group text-center">
+                <input type="text" name="shortName" id="short-ame" class="form-control form-control-custom"
+                  placeholder="Abbreviation" [(ngModel)]="structureProfile.shortName" required autocomplete="off" />
+                <span class="error" *ngIf="formErrors.shortName">
+                  {{formErrors.shortName.error}}
+                </span>
+              </div>
+            </div>
+            <div class="col-12 col-lg-4">
+              <input type="file" name="fileToUpload" id="file-to-upload" [hidden]="true" #fileInput
+                (change)="onFileChanged(fileInput)"
+                accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+              <label for="file-to-upload" class="btn btn-warning btn-rounded">
+                <fa-icon [icon]="faFolder"></fa-icon>
+                Browse folder
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card shadow my-3 rounded" *ngIf="structures && structures.length > 0">
+        <div class="card-header bg-white rounded">
+          <h5 class="card-title mb-0 pb-0">
+            File Upload Preview
+          </h5>
+        </div>
+        <div class="card-body scrollable">
+          <table class="table small table-hover table-bordered table-lg">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>1</th>
+                <th>2</th>
+                <th>3</th>
+                <th>4</th>
+                <th>5</th>
+                <th>6</th>
+                <th>7</th>
+                <th>8</th>
+                <th>9</th>
+                <th>10</th>
+                <th>11</th>
+                <th>12</th>
+                <th>13</th>
+                <th>14</th>
+                <th>15</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let row of structures; index as j">
+                <td>{{j+1}}.</td>
+                <td *ngFor="let column of normalize(row)">
+                  {{column}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="form-group text-center">
+        <button class="btn btn-success btn-rounded" [disabled]="!newForm.form.valid || !file" (click)="saveData()"
+          *ngIf="isNewItemMode">
+          Continue
+        </button>
+
+        <div class="text-info text-center mt-2" *ngIf="isProcessing">
+          <span>
+            <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>
+            processing request
+          </span>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- New Item Form -->

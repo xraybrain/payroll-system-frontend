@@ -1,0 +1,75 @@
+<div class="row">
+  <div class="col-12 mb-2" *ngFor="let schedule of bankSchedule; index as j">
+    <div class="card rounded my-2">
+      <div class="card-header bg-white">
+        <h5 class="card-title text-muted text-capitalize">
+          {{schedule.Bank}}
+        </h5>
+      </div>
+      <div class="card-body scrollable" [id]="'printable-' + j">
+        <div class="d-none" style="text-align: center">
+          <h5 class="mb-1 p-0 text-center">IMO STATE POLYTECHNIC UMUAGWO</h5>
+          <p class="mb-1 p-0 text-center text-capitalize">{{schedule.Bank}}</p>
+        </div>
+        <table class="table small table-bordered table-hover table-lg">
+          <thead class="text-muted">
+            <tr>
+              <th>#</th>
+              <th>Surname</th>
+              <th>Firstname</th>
+              <th>Othername</th>
+              <th>Account No.</th>
+              <th>Salary</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let salary of schedule.Salaries; index as i;">
+              <td>{{i+1}}.</td>
+              <td class="text-capitalize">
+                {{salary.Staff.surname}}
+              </td>
+              <td class="text-capitalize">
+                {{salary.Staff.firstname}}
+              </td>
+              <td class="text-capitalize">
+                {{salary.Staff.othername}}
+              </td>
+              <td>
+                {{salary.Staff.accountNo}}
+              </td>
+              <td>
+                {{salary.netPay | number}}
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <th>
+                Total
+              </th>
+              <th>
+                {{calculateTotal(schedule.Salaries) | number}}
+              </th>
+            </tr>
+          </tbody>
+        </table>
+        <div class="text-center">
+          <span>
+            <b>
+              Amount in words:
+            </b>
+            {{amountInWords(calculateTotal(schedule.Salaries))}}
+          </span>
+          <hr class="m-0 p-0">
+        </div>
+      </div>
+      <div class="card-footer bg-white text-right border-0 p-1">
+        <label class="btn btn-light btn-rounded" (click)="print('#printable-' + j)">
+          Print schedule
+        </label>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,167 @@
+<div class="d-flex">
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <h5 class="title">Payroll System</h5>
+    </div>
+    <ul class="list-unstyled">
+      <li>
+        <a routerLink="/admin/dashboard/" class="link">
+          <fa-icon [icon]="faTh" class="mr-2"></fa-icon>
+          Dashboard
+        </a>
+      </li>
+      <li>
+        <a routerLink="/admin/profile" class="link">
+          <fa-icon [icon]="faIdCard" class="mr-2"></fa-icon>
+          Profile
+        </a>
+      </li>
+      <li>
+        <a href="javascript: void(0)" data-toggle="collapse" data-target="#staff-menu">
+          <div class="d-flex justify-content-between">
+            <span>
+              <fa-icon [icon]="faUsers" class="mr-2"></fa-icon>
+              Staff
+            </span>
+
+            <span class="collapse-toggler">
+              <fa-icon [icon]="faChevronCircleDown"></fa-icon>
+            </span>
+          </div>
+        </a>
+        <div class="collapse menu-widget ml-4" id="staff-menu">
+          <a routerLink="/admin/staffs/new" class="px-2 py-2 link">
+            <fa-icon [icon]="faUserPlus" class="mr-2"></fa-icon>
+            Enroll staff
+          </a>
+          <a routerLink="/admin/staffs/view" class="px-2 py-2 link">
+            <fa-icon [icon]="faUsers" class="mr-2"></fa-icon>
+            Staffs record
+          </a>
+        </div>
+      </li>
+      <li *ngIf="userType === 'superadmin' || userType === 'admin'">
+        <a href="javascript: void(0)" data-toggle="collapse" data-target="#payroll-menu">
+          <div class="d-flex justify-content-between">
+            <span>
+              <fa-icon [icon]="faMoneyCheckAlt" class="mr-2"></fa-icon>
+              Payroll
+            </span>
+
+            <span class="collapse-toggler">
+              <fa-icon [icon]="faChevronCircleDown"></fa-icon>
+            </span>
+          </div>
+        </a>
+        <div class="collapse menu-widget ml-4" id="payroll-menu">
+          <a routerLink="/admin/payrolls/new" class="px-2 py-2 link">
+            <fa-icon [icon]="faPlusCircle" class="mr-2"></fa-icon>
+            Create Payroll
+          </a>
+          <a routerLink="/admin/payrolls/view" class="px-2 py-2 link">
+            <fa-icon [icon]="faHistory" class="mr-2"></fa-icon>
+            Payrolls
+          </a>
+        </div>
+      </li>
+
+      <li>
+        <a href="javascript: void(0)" data-toggle="collapse" data-target="#salary-structure-menu">
+          <div class="d-flex justify-content-between">
+            <span>
+              <fa-icon [icon]="faListAlt" class="mr-2"></fa-icon>
+              Salary Structure
+            </span>
+
+            <span class="collapse-toggler">
+              <fa-icon [icon]="faChevronCircleDown"></fa-icon>
+            </span>
+          </div>
+        </a>
+        <div class="collapse menu-widget ml-4" id="salary-structure-menu">
+          <a routerLink="/admin/salary/structures/new" class="px-2 py-2 link">
+            <fa-icon [icon]="faPlusCircle" class="mr-2"></fa-icon>
+            Upload Salary Structure
+          </a>
+          <a routerLink="/admin/salary/structures/view" class="px-2 py-2 link">
+            <fa-icon [icon]="faListAlt" class="mr-2"></fa-icon>
+            Salary Structures
+          </a>
+        </div>
+      </li>
+
+      <li>
+        <a href="javascript: void(0)" data-toggle="collapse" data-target="#bank-menu">
+          <div class="d-flex justify-content-between">
+            <span>
+              <fa-icon [icon]="faPiggyBank" class="mr-2"></fa-icon>
+              Bank
+            </span>
+
+            <span class="collapse-toggler">
+              <fa-icon [icon]="faChevronCircleDown"></fa-icon>
+            </span>
+          </div>
+        </a>
+        <div class="collapse menu-widget ml-4" id="bank-menu">
+          <a routerLink="/admin/banks/new" class="px-2 py-2 link">
+            <fa-icon [icon]="faPlusCircle" class="mr-2"></fa-icon>
+            New Bank
+          </a>
+          <a routerLink="/admin/banks/view" class="px-2 py-2 link">
+            <fa-icon [icon]="faListAlt" class="mr-2"></fa-icon>
+            Banks
+          </a>
+        </div>
+      </li>
+      <li>
+        <a href="javascript: void(0)" data-toggle="collapse" data-target="#misc-menu">
+          <div class="d-flex justify-content-between">
+            <span>
+              <fa-icon [icon]="faHistory" class="mr-2"></fa-icon>
+              Allowance & Deductions
+            </span>
+
+            <span class="collapse-toggler">
+              <fa-icon [icon]="faChevronCircleDown"></fa-icon>
+            </span>
+          </div>
+        </a>
+        <div class="collapse menu-widget ml-4" id="misc-menu">
+          <a routerLink="/admin/miscellanous/new" class="px-2 py-2 link">
+            <fa-icon [icon]="faPlusCircle" class="mr-2"></fa-icon>
+            Create Allowance or Deduction
+          </a>
+          <a routerLink="/admin/miscellanous/view" class="px-2 py-2 link">
+            <fa-icon [icon]="faHistory" class="mr-2"></fa-icon>
+            Allowance & Deductions
+          </a>
+        </div>
+      </li>
+      <li>
+        <a routerLink="/admin/departments/" class="link">
+          <fa-icon [icon]="faListAlt" class="mr-2"></fa-icon>
+          Departments & Designations
+        </a>
+      </li>
+      <li>
+        <a (click)="logOut()">
+          <fa-icon [icon]="faPowerOff" class="mr-2"></fa-icon>
+          Logout
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <div class="overlay"></div>
+  <div class="content ml-auto">
+    <nav class="navbar navbar-expand-lg nav-light text-right">
+      <button id="toggle-sidebar" class="navbar-toggler btn btn-warning bg-warning btn-rounded ml-auto">
+        <fa-icon [icon]="faAlignLeft"></fa-icon>
+        MENU
+      </button>
+    </nav>
+    <div class="container-fluid">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

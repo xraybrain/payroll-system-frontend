@@ -1,0 +1,115 @@
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { Department } from "../models/department.models";
+import { Designation } from "../models/designation.models";
+import { DepartmentService } from "../services/department.service";
+import { DesignationService } from "../services/designation.service";
+import { NotificationService } from "../services/notification.service";
+
+@Component({
+  selector: "app-designation-form",
+  templateUrl: "./designation-form.component.html",
+  styleUrls: ["./designation-form.component.css"],
+})
+export class DesignationFormComponent implements OnInit {
+  faSpinner = faSpinner;
+
+  @Input()
+  isNewItemMode: boolean;
+  @Input()
+  isEditMode: boolean;
+  @Input()
+  dsgProfile: Designation;
+
+  @Output()
+  newItem: EventEmitter<Designation> = new EventEmitter();
+
+  @Output()
+  itemUpdate: EventEmitter<Designation> = new EventEmitter();
+
+  formErrors: any = {
+    name: null,
+  };
+  isProcessing = false;
+  departments: Department[] = [];
+
+  constructor(
+    public dsgService: DesignationService,
+    public deptService: DepartmentService,
+    public notify: NotificationService
+  ) {}
+
+  saveData() {
+    if (this.isProcessing) return;
+    this.isProcessing = true;
+    this.dsgService.save(this.dsgProfile).subscribe(
+      (response) => {
+        this.isProcessing = false;
+        if (response.success) {
+          this.newItem.emit(response.result);
+          this.notify.showSuccess(response.message, "Success");
+          this.resetFormError();
+          this.resetProfile();
+        } else {
+          this.notify.showWarning(response.message, "Operation failed");
+          console.log(response);
+          this.formErrors = response.result || this.resetFormError();
+        }
+      },
+      (reason) => {
+        console.log(reason);
+        this.notify.showError(
+          "We encountered error while contacting server.",
+          "Operation failed"
+        );
+      }
+    );
+  }
+
+  updateData() {
+    if (this.isProcessing) return;
+    this.isProcessing = true;
+
+    this.dsgService.update(this.dsgProfile).subscribe(
+      (response) => {
+        this.formErrors = response.result || {};
+        if (response.success) {
+          this.notify.showSuccess(response.message, "success");
+          this.itemUpdate.emit(response.result);
+        } else {
+          this.notify.showError(response.message, "Operation failed");
+        }
+      },
+      (reason) => {
+        console.log(reason);
+        this.notify.showError("Unable to contact server.", "Operation failed");
+      },
+      () => {
+        this.isProcessing = false;
+      }
+    );
+  }
+
+  resetFormError() {
+    this.formErrors = {
+      name: null,
+    };
+  }
+
+  resetProfile() {
+    this.dsgProfile = new Designation(null, null);
+  }
+
+  ngOnInit() {
+    this.deptService.getAll(1, "", false).subscribe(
+      (response) => {
+        if (response.success) {
+          this.departments = response.result;
+        }
+      },
+      (reason) => {
+        console.log(reason);
+      }
+    );
+  }
+}

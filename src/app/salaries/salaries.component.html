@@ -1,0 +1,134 @@
+<div class="row flex-wrap-reverse">
+  <div class="col-12 mb-2" [ngClass]="{'col-md-7 col-lg-8 col-xl-9': !isMainMode}">
+    <div class="card">
+      <div class="card-header bg-white">
+        <div>
+          <form class="w-100">
+            <div class="form-control form-control-custom d-flex">
+              <input type="search" name="searchquery"
+                placeholder="Search salary by staff surname, firstname, or othername." [(ngModel)]="searchquery"
+                autocomplete="off" />
+              <button class="btn my-0 py-0" (click)="onSearch()">
+                <fa-icon [icon]="faSearch"></fa-icon>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="card-body scrollable p-1">
+        <table class="table small table-bordered table-hover table-lg">
+          <thead class="text-muted">
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>DOE</th>
+              <th>Department</th>
+              <th>Designation</th>
+              <th>Status</th>
+              <th>Allowance & Deductions</th>
+              <th>(+)Gross</th>
+              <th>(-)Ded.</th>
+              <th>Net</th>
+              <th class="text-right">
+                Action
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let salary of salaries; index as i;">
+              <td>{{i+1}}.</td>
+              <td class="text-capitalize">
+                {{salary.Staff.surname}},
+                {{salary.Staff.firstname}}
+                {{salary.Staff.othername}}
+              </td>
+              <td>{{salary.Staff.dateOfEmp | date}}</td>
+              <td>{{salary.Staff.Department.name}}</td>
+              <td>{{salary.Staff.Designation.name}}</td>
+              <td>
+                {{salary.status}}
+              </td>
+              <td>
+                <table class="table table-bordered bg-white">
+                  <ng-container *ngFor="let misc of salary.SalaryMiscellanous">
+                    <tr *ngIf="misc.subTotalAmount > 0">
+                      <td>
+                        {{misc.Miscellanou.title}}
+                      </td>
+                      <td>
+                        {{misc.subTotalAmount}}
+                      </td>
+                    </tr>
+                  </ng-container>
+                </table>
+              </td>
+              <td>
+                {{salary.grossPay | number}}
+              </td>
+              <td>
+                {{salary.totalDeducted | number}}
+              </td>
+              <td>
+                {{salary.netPay | number}}
+              </td>
+              <td class="dropdown">
+                <label class="btn btn-sm btn-info" data-toggle="dropdown">
+                  more
+                </label>
+                <div class="dropdown-menu dropdown-menu-right">
+                  <label class="dropdown-item" (click)="onEdit(salary)">
+                    <div class="d-flex align-items-center">
+                      <span class="mr-2">
+                        <fa-icon [icon]="faEdit" class="text-info"></fa-icon>
+                      </span>
+                      <small>
+                        <span class="d-block">Edit details</span>
+                        <span class="d-block">
+                          Change this salary details
+                        </span>
+                      </small>
+                    </div>
+                  </label>
+                  <label class="dropdown-item" (click)="onDelete(salary)">
+                    <div class="d-flex align-items-center">
+                      <span class="mr-2">
+                        <fa-icon [icon]="faTrash" class="text-danger"></fa-icon>
+                      </span>
+                      <small>
+                        <span class="d-block">Delete salary</span>
+                        <span class="d-block">
+                          Remove this salary completely
+                        </span>
+                      </small>
+                    </div>
+                  </label>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p *ngIf="isLoading" class="text-center mt-2">
+          <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>
+          Loading
+        </p>
+
+        <button *ngIf="hasMoreData" class="btn btn-sm btn-outline-info" (click)=loadData(currentPage+1)>
+          Load More...
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form -->
+  <div class="col-12 col-md-5 col-lg-4 col-xl-3 mb-2 form-container" [hidden]="!isNewItemMode && !isEditMode">
+    <div class="text-right" (click)="onBackToMain()">
+      <button class="btn btn-sm mb-1">
+        <fa-icon [icon]="faTimes"></fa-icon>
+      </button>
+    </div>
+    <app-salary-form [salary]="salary" (salaryUpdate)="onUpdate($event)">
+    </app-salary-form>
+  </div>
+  <!-- Form -->
+</div>

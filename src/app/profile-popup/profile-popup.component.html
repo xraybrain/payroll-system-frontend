@@ -1,0 +1,124 @@
+<div class="modal-header border-0">
+  <h5 class="modal-title">
+    <fa-icon [icon]="faIdCard" class="text-info"></fa-icon>
+    <span class="text-secondary">
+      Profile
+    </span>
+  </h5>
+  <a href="javascript: void(0)" class="close" (click)="close()">
+    <fa-icon [icon]="faTimes"></fa-icon>
+  </a>
+</div>
+<div class="modal-body">
+  <div class="row align-items-center">
+    <div class="col-md-5 mb-2">
+      <div class="avatar mx-auto">
+        <img [src]="staff.imageUrl" alt="staff passport" *ngIf="staff.imageUrl">
+        <img src="assets/avatar.png" alt="staff passport" *ngIf="!staff.imageUrl">
+      </div>
+    </div>
+    <div class="col-md-7 mb-2">
+      <div class="card bg-light">
+        <div class="card-body">
+          <p class="mb-1">
+            <b>Name:</b>
+            <span class="text-capitalize">
+              {{staff.surname}} {{staff.firstname}} {{staff.othername}}
+            </span>
+          </p>
+          <hr class="socket mt-0" />
+          <div>
+            <p class="mb-1">
+              <b>Department:</b>
+              <span>
+                {{staff.Department.name}}
+              </span>
+            </p>
+            <hr class="socket mt-0" />
+          </div>
+          <div>
+            <p class="mb-1">
+              <b>Designation:</b>
+              <span>
+                {{staff.Designation.name}}
+              </span>
+            </p>
+            <hr class="socket mt-0" />
+          </div>
+          <div>
+            <p class="mb-1">
+              <b>Class:</b>
+              <span>
+                {{staff.StaffClass.name}}
+              </span>
+            </p>
+            <hr class="socket mt-0" />
+          </div>
+          <div>
+            <p class="mb-1">
+              <b>Level & Grade:</b>
+              <span>
+                {{staff.level}}, {{staff.grade}}
+              </span>
+            </p>
+            <hr class="socket mt-0" />
+          </div>
+          <div>
+            <p class="mb-1">
+              <b>Salary Structure:</b>
+              <span>
+                {{staff.SalaryStructure.shortName}}
+              </span>
+            </p>
+            <hr class="socket mt-0" />
+          </div>
+          <div>
+            <p class="mb-1">
+              <b>Bank:</b>
+              <span>
+                {{staff.Bank.name}}
+              </span>
+            </p>
+            <hr class="socket mt-0" />
+          </div>
+          <div>
+            <p class="mb-1">
+              <b>Account No:</b>
+              <span>
+                {{staff.accountNo}}
+              </span>
+            </p>
+            <hr class="socket mt-0" />
+          </div>
+          <div>
+            <p class="mb-1">
+              <b>Gender:</b>
+              <span class="text-capitalize">
+                {{staff.gender}}
+              </span>
+            </p>
+            <hr class="socket mt-0" />
+          </div>
+          <div>
+            <p class="mb-1">
+              <b>Date Of Employment:</b>
+              <span>
+                {{staff.dateOfEmp | date}}
+              </span>
+            </p>
+            <hr class="socket mt-0" />
+          </div>
+          <div>
+            <p class="mb-1">
+              <b>Date Of Retirement:</b>
+              <span>
+                {{staff.dateOfRet | date}}
+              </span>
+            </p>
+            <hr class="socket mt-0" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

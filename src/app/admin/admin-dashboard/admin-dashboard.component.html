@@ -1,0 +1,104 @@
+<div class="row">
+  <div class="col-6 col-md-3 mb-2">
+    <div class="card bg-primary text-white rounded summary-card">
+      <div class="card-body">
+        <div class="text-center">
+          <span class="d-block">
+            <fa-icon [icon]="faMoneyBill"></fa-icon>
+          </span>
+          <h5>Last Payroll</h5>
+          <h4 class="font-weight-bold">
+            {{summary.monthlySalaries | number}}
+          </h4>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3 mb-2">
+    <div class="card bg-warning rounded summary-card">
+      <div class="card-body">
+        <div class="text-center">
+          <span class="d-block">
+            <fa-icon [icon]="faPiggyBank"></fa-icon>
+          </span>
+          <h5>Registered Banks</h5>
+          <h4 class="font-weight-bold">
+            {{summary.totalBanks | number}}
+          </h4>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3 mb-2">
+    <div class="card bg-primary text-white rounded summary-card">
+      <div class="card-body">
+        <div class="text-center">
+          <span class="d-block">
+            <fa-icon [icon]="faUsers"></fa-icon>
+          </span>
+          <h5 class="pr-1">Staffs</h5>
+          <h4 class="font-weight-bold">
+            {{summary.totalStaff | number}}
+          </h4>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3 mb-2">
+    <div class="card bg-warning rounded summary-card">
+      <div class="card-body">
+        <div class="text-center">
+          <span class="d-block">
+            <fa-icon [icon]="faListAlt"></fa-icon>
+          </span>
+          <h5 class="pr-1">Departments</h5>
+          <h4 class="font-weight-bold">
+            {{summary.totalDepts | number}}
+          </h4>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12 col-md-6">
+    <div class="card rounded mt-2">
+      <div class="card-header mb-0 bg-white rounded border-0">
+        <h5 class="card-title text-muted">
+          <fa-icon [icon]="faChartLine"></fa-icon>
+          Last Payroll Bank Schedule Chart
+        </h5>
+        <hr class="socket my-0" />
+      </div>
+      <div class="card-body scrollable p-1">
+        <div *ngIf="scheduleLineChartData[0].data.length > 0">
+          <canvas ngChartjs [datasets]="scheduleLineChartData" [labels]="scheduleLineChartLabels"
+            [options]="lineChartOptions" [legend]="lineChartLegend" [chartType]="lineChartType"
+            [inlinePlugins]="inlinePlugin">
+          </canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-md-6">
+    <div class="card rounded mt-2">
+      <div class="card-header mb-0 bg-white rounded border-0">
+        <h5 class="card-title text-muted">
+          <fa-icon [icon]="faChartLine"></fa-icon>
+          Annual Payroll Chart
+        </h5>
+        <hr class="socket my-0" />
+      </div>
+      <div class="card-body scrollable p-1">
+        <div *ngIf="annualLineChartData[0].data.length > 0">
+          <canvas ngChartjs [datasets]="annualLineChartData" [labels]="annualLineChartLabels"
+            [options]="lineChartOptions" [legend]="lineChartLegend" [chartType]="lineChartType"
+            [inlinePlugins]="inlinePlugin">
+          </canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

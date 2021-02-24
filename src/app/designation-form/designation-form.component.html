@@ -1,0 +1,57 @@
+<!-- New Item Form -->
+<div class="card rounded">
+  <div class="card-header bg-white rounded">
+    <h5 class="text-muted text-center" *ngIf="isNewItemMode">
+      New Designation
+    </h5>
+    <h5 class="text-muted text-center" *ngIf="isEditMode">
+      Edit Designation
+    </h5>
+  </div>
+  <div class="card-body">
+    <form #newForm="ngForm">
+
+      <div class="form-group text-center">
+        <input type="text" name="name" class="form-control form-control-custom" placeholder="Name of designation"
+          [(ngModel)]="dsgProfile.name" required autocomplete="off" />
+        <span class="error" *ngIf="formErrors.name">
+          {{formErrors.name.error}}
+        </span>
+      </div>
+
+      <div class="form-group text-center">
+        <select name="deptId" class="form-control form-control-custom" [(ngModel)]="dsgProfile.deptId" required>
+          <option [value]="null">
+            Select Department
+          </option>
+          <option [value]="dept.id" *ngFor="let dept of departments">
+            {{dept.name}}
+          </option>
+        </select>
+        <span class="error" *ngIf="formErrors.name">
+          {{formErrors.deptId.error}}
+        </span>
+      </div>
+
+      <div class="form-group text-center">
+        <button class="btn btn-success btn-rounded" [disabled]="!newForm.form.valid" (click)="saveData()"
+          *ngIf="isNewItemMode">
+          Save Designation
+        </button>
+
+        <button class="btn btn-success btn-rounded" [disabled]="!newForm.form.valid" (click)="updateData()"
+          *ngIf="isEditMode">
+          Update Designation
+        </button>
+
+        <div class="text-info text-center mt-2" *ngIf="isProcessing">
+          <span>
+            <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>
+            processing request
+          </span>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- New Item Form -->

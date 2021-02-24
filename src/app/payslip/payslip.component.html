@@ -1,0 +1,136 @@
+<div class="row" id="printable">
+  <div class="col-12 mb-2" *ngFor="let salary of salaries; index as i;">
+    <div class="card">
+      <div class="card-body">
+        <div style="text-align: center">
+          <h5 class="card-title text-center m-1 p-0">
+            Imo State Polytechnic
+          </h5>
+          <h6 class="m-1 p-0">Payslip</h6>
+        </div>
+
+        <div>
+          <p>
+            <b class="font-weight-bold">
+              Employee Name:
+            </b> {{salary.Staff.surname}} {{salary.Staff.firstname}} {{salary.Staff.othername}}
+          </p>
+          <hr>
+          <p>
+            <b class="font-weight-bold">
+              Designation:
+            </b> {{salary.Staff.Designation.name}}
+          </p>
+          <hr>
+        </div>
+
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <table class="table table-hover table-bordered">
+              <thead>
+                <tr>
+                  <th>
+                    Earnings
+                  </th>
+                  <th style="text-align: right;">Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+
+                <ng-container *ngFor="let misc of getSalaryMisc(0, salary.SalaryMiscellanous)">
+                  <tr *ngIf="misc.subTotalAmount > 0">
+                    <td>
+                      {{misc.Miscellanou.title}}
+                    </td>
+                    <td style="text-align: right;">
+                      {{misc.subTotalAmount | number}}
+                    </td>
+                  </tr>
+                </ng-container>
+                <tr>
+                  <td>Consolidated</td>
+                  <td style="text-align: right;">{{salary.consolidated | number}}</td>
+                </tr>
+                <tr>
+                  <th>Gross Pay</th>
+                  <th style="text-align: right;">{{salary.grossPay | number}}</th>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-12 col-md-6">
+            <table class="table table-hover table-bordered">
+              <thead>
+                <tr>
+                  <th>
+                    Deductions
+                  </th>
+                  <th style="text-align: right;">Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let misc of getSalaryMisc(1, salary.SalaryMiscellanous)">
+                  <tr *ngIf="misc.subTotalAmount > 0">
+                    <td>
+                      {{misc.Miscellanou.title}}
+                    </td>
+                    <td style="text-align: right;">
+                      {{misc.subTotalAmount | number}}
+                    </td>
+                  </tr>
+                </ng-container>
+                <tr>
+                  <th>Total Deductions</th>
+                  <th style="text-align: right;">{{salary.totalDeducted}}</th>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div style="text-align: right;">
+          <table class="table table-hover table-bordered ml-auto" style="width: 300px;">
+            <thead>
+              <tr>
+                <th>
+                  Gross Pay
+                </th>
+                <th class="text-right">
+                  {{salary.grossPay | number}}
+                </th>
+              </tr>
+              <tr>
+                <th>
+                  Total Deductions
+                </th>
+                <th class="text-right">
+                  {{salary.totalDeducted | number}}
+                </th>
+              </tr>
+              <tr>
+                <th>
+                  Net Pay
+                </th>
+                <th class="text-right">
+                  {{salary.netPay | number}}
+                </th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+
+        <div style="text-align: right">
+          <p>
+            Sign & Date...................
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="text-center">
+  <p *ngIf="isLoading" class="text-center mt-2">
+    <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>
+    Loading
+  </p>
+</div>

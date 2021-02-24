@@ -1,0 +1,7 @@
+<app-staff-form [isNewItemMode]="isNewItemMode" [isEditMode]="isEditMode" [staffProfile]="staffProfile"
+  (newItem)="onNewItem($event)" (itemUpdate)="onUpdate($event)">
+</app-staff-form>
+<div class="text-center text-info" *ngIf="isLoading">
+  <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>
+  Loading profile
+</div>
