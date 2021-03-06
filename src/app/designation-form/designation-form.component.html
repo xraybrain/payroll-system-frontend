@@ -19,7 +19,7 @@
         </span>
       </div>
 
-      <div class="form-group text-center">
+      <!-- <div class="form-group text-center">
         <select name="deptId" class="form-control form-control-custom" [(ngModel)]="dsgProfile.deptId" required>
           <option [value]="null">
             Select Department
@@ -31,7 +31,7 @@
         <span class="error" *ngIf="formErrors.name">
           {{formErrors.deptId.error}}
         </span>
-      </div>
+      </div> -->
 
       <div class="form-group text-center">
         <button class="btn btn-success btn-rounded" [disabled]="!newForm.form.valid" (click)="saveData()"

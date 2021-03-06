@@ -4,6 +4,7 @@ export class SalaryMisc {
   constructor(
     public mixedId = null,
     public miscId = null,
+    public payrollId = null,
     public salaryId = null,
     public subTotalAmount = null,
     public id = null,

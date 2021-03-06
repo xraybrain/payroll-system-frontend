@@ -1,12 +1,19 @@
 <!-- New Item Form -->
 <div class="card rounded">
   <div class="card-header bg-white rounded">
-    <h5 class="text-muted text-center" *ngIf="isNewItemMode">
-      Staff Enrollment
-    </h5>
-    <h5 class="text-muted text-center" *ngIf="isEditMode">
-      Edit Staff Information
-    </h5>
+    <div *ngIf="!title">
+      <h5 class="text-muted text-center" *ngIf="isNewItemMode">
+        Staff Enrollment
+      </h5>
+      <h5 class="text-muted text-center" *ngIf="isEditMode">
+        Edit Staff Information
+      </h5>
+    </div>
+    <div *ngIf="title">
+      <h5 class="text-muted text-center">
+        {{title}}
+      </h5>
+    </div>
   </div>
   <div class="card-body">
     <form #newForm="ngForm">
@@ -15,17 +22,21 @@
           <div class="text-center">
             <div class="passport">
               <img src="/assets/avatar.png" alt="passport" *ngIf="!isEditMode && !selectedImage">
-              <img [src]="selectedImage.src" alt="passport" *ngIf="!isEditMode && selectedImage">
-              <img [src]="staffProfile.imageUrl" alt="passport" *ngIf="isEditMode && staffProfile.imageUrl">
-              <img src="/assets/avatar.png" alt="passport" *ngIf="isEditMode && !staffProfile.imageUrl">
+              <img [src]="selectedImage.src" alt="passport" *ngIf="selectedImage">
+              <img [src]="staffProfile.imageUrl" alt="passport" *ngIf="isEditMode && staffProfile.imageUrl && !selectedImage">
+              <img src="/assets/avatar.png" alt="passport" *ngIf="isEditMode && !staffProfile.imageUrl && !selectedImage">
             </div>
           </div>
-          <div class="text-center" [hidden]="isEditMode">
-            <input type="file" name="fileToUpload" id="file-to-upload" [hidden]="true"
+          <div class="text-center">
+            <input type="file" name="fileToUpload" id="image-to-upload" [hidden]="true"
               accept="image/jpg,image/jpeg,image/png" #fileInput (change)="onFileChanged(fileInput)">
-            <label for="file-to-upload" class="btn btn-warning">
+            <label for="image-to-upload" class="btn btn-warning">
               <fa-icon [icon]="faFolder"></fa-icon>
               Browse folder
+            </label>
+            <label class="btn btn-success" *ngIf="isEditMode && selectedImage" (click)="changePassport()">
+              Change Passport
+              <fa-icon [icon]="faCloudUploadAlt"></fa-icon>
             </label>
           </div>
           <div class="alert alert-danger" *ngIf="selectedImage && selectedImage.hasSizeError">
@@ -122,7 +133,7 @@
                   Department
                 </label>
                 <select name="deptId" id="dept" class="form-control form-control-custom custom-select"
-                  [(ngModel)]="staffProfile.deptId" required (change)="setDeginations()">
+                  [(ngModel)]="staffProfile.deptId" required>
                   <option [value]="null">Select Department</option>
                   <option [value]="dept.id" *ngFor="let dept of departments">
                     {{dept.name}}
@@ -276,7 +287,8 @@
                   Account No.
                 </label>
                 <input type="text" name="accountNo" id="account-no" class="form-control form-control-custom"
-                  placeholder="Account No." [(ngModel)]="staffProfile.accountNo" required autocomplete="off" maxlength="10" />
+                  placeholder="Account No." [(ngModel)]="staffProfile.accountNo" required autocomplete="off"
+                  maxlength="10" />
                 <span class="error" *ngIf="formErrors.accountNo">
                   {{formErrors.accountNo.error}}
                 </span>
@@ -287,13 +299,13 @@
       </div>
 
       <div class="form-group text-center">
-        <button class="btn btn-success btn-rounded" [disabled]="!newForm.form.valid || !staffProfile.fileToUpload" (click)="saveData()"
+        <button class="btn btn-success btn-rounded" [disabled]="!newForm.form.valid" (click)="saveData()"
           *ngIf="isNewItemMode">
           Save Enrollment
         </button>
 
-        <button class="btn btn-success btn-rounded" [disabled]="!newForm.form.valid"
-          (click)="updateData()" *ngIf="isEditMode">
+        <button class="btn btn-success btn-rounded" [disabled]="!newForm.form.valid" (click)="updateData()"
+          *ngIf="isEditMode">
           Update Enrollment
         </button>
 

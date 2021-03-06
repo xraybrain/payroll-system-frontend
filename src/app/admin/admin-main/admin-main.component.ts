@@ -16,8 +16,10 @@ import {
   faUserFriends,
   faUserPlus,
   faUsers,
+  faCog,
 } from "@fortawesome/free-solid-svg-icons";
 import { AuthService } from "src/app/services/auth.service";
+import { ResetPasswordModalService } from "src/app/services/reset-password-modal.service";
 
 @Component({
   selector: "app-admin-main",
@@ -40,10 +42,14 @@ export class AdminMainComponent implements OnInit {
   faListAlt = faListAlt;
   faMoneyCheckAlt = faMoneyCheckAlt;
   faPiggyBank = faPiggyBank;
+  faCog = faCog;
 
   userType: string;
 
-  constructor(public authService: AuthService) {
+  constructor(
+    public authService: AuthService,
+    public resetPasswordModal: ResetPasswordModalService
+  ) {
     this.userType = this.authService.getUserType();
   }
 
@@ -51,5 +57,9 @@ export class AdminMainComponent implements OnInit {
 
   logOut() {
     this.authService.logout();
+  }
+
+  resetPassword() {
+    this.resetPasswordModal.show();
   }
 }

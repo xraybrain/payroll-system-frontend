@@ -8,7 +8,7 @@
     <div>
       <button class="btn btn-sm btn-warning btn-rounded mx-1 mb-2" (click)="calculateSalaries()"
         [disabled]="!isMainMode">
-        <fa-icon [icon]="faPlusCircle" class="mr-1"></fa-icon>
+        <fa-icon [icon]="faCalculator" class="mr-1"></fa-icon>
         <span *ngIf="!payroll.status">Calculate Salary</span>
         <span *ngIf="payroll.status">Recalculate Salary</span>
       </button>
@@ -17,14 +17,18 @@
         Generate Bank Schedule
       </button>
       <button class="btn btn-sm btn-warning btn-rounded mx-1 mb-2" (click)="setViewMode(4)" [disabled]="!isMainMode">
-        <fa-icon [icon]="faPlusCircle"></fa-icon>
+        <fa-icon [icon]="faReceipt"></fa-icon>
         Generate Payslip
+      </button>
+      <button class="btn btn-sm btn-warning btn-rounded mx-1 mb-2" (click)="setViewMode(6)" [disabled]="!isMainMode">
+        <fa-icon [icon]="faPlusCircle"></fa-icon>
+        Generate Salary Summary
       </button>
     </div>
   </div>
 
   <hr class="socket mt-1" />
-  <div [hidden]="isBankScheduleMode || isPayslipMode">
+  <div [hidden]="isBankScheduleMode || isPayslipMode || isSummaryMode">
     <app-salaries [refreshSalaries]="refreshSalaries" [isNewItemMode]="isNewItemMode" [isEditMode]="isEditMode"
       [isMainMode]="isMainMode" (changeViewMode)="setViewMode($event)" (refreshed)="onRefreshed($event)"></app-salaries>
   </div>
@@ -41,11 +45,36 @@
         <fa-icon [icon]="faChevronCircleLeft"></fa-icon>
         Back
       </label>
-      <label class="btn btn-sm btn-light btn-rounded" (click)="print('#printable')">
-        <fa-icon [icon]="faPrint" class="mr-1"></fa-icon>
-        Print Payslips
-      </label>
+      <div>
+        <input type="file" name="fileToUpload" id="file-to-upload" [hidden]="true"
+          accept="image/jpg,image/jpeg,image/png" #fileInput (change)="onFileChanged(fileInput)">
+        <label for="file-to-upload" class="btn btn-sm btn-light btn-rounded mr-1">
+          <fa-icon [icon]="faSignature" class="mr-1"></fa-icon>
+          Sign Payslips
+        </label>
+
+        <label class="btn btn-sm btn-light btn-rounded" (click)="print('#printable')">
+          <fa-icon [icon]="faPrint" class="mr-1"></fa-icon>
+          Print Payslips
+        </label>
+      </div>
     </div>
-    <app-payslip></app-payslip>
+    <app-payslip [signature]="signature"></app-payslip>
+  </div>
+
+  <div *ngIf="isSummaryMode">
+    <div class="d-flex justify-content-between">
+      <label class="btn btn-sm btn-secondary btn-rounded" (click)="setViewMode(0)">
+        <fa-icon [icon]="faChevronCircleLeft"></fa-icon>
+        Back
+      </label>
+      <div>
+        <label class="btn btn-sm btn-light btn-rounded" (click)="print('#printable')">
+          <fa-icon [icon]="faPrint" class="mr-1"></fa-icon>
+          Print Summary
+        </label>
+      </div>
+    </div>
+    <app-salary-summary></app-salary-summary>
   </div>
 </div>

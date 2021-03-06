@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-12 mb-2" *ngFor="let schedule of bankSchedule; index as j">
-    <div class="card rounded my-2">
+    <div class="card rounded my-2" *ngIf="schedule.Bank">
       <div class="card-header bg-white">
         <h5 class="card-title text-muted text-capitalize">
           {{schedule.Bank}}
@@ -66,6 +66,15 @@
         </div>
       </div>
       <div class="card-footer bg-white text-right border-0 p-1">
+        <label class="btn btn-success btn-rounded mr-1" (click)="exportAsExcel(schedule)">
+          <span>
+            <fa-icon [icon]="faFileExcel"></fa-icon>
+          </span>
+          Export as excel
+          <span *ngIf="isProcessing">
+            <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>
+          </span>
+        </label>
         <label class="btn btn-light btn-rounded" (click)="print('#printable-' + j)">
           Print schedule
         </label>

@@ -5,13 +5,103 @@
       Staffs
     </h5>
 
-    <button class="btn btn-warning btn-rounded" (click)="setViewMode(2)" [disabled]="isNewItemMode || isEditMode">
-      <fa-icon [icon]="faPlusCircle"></fa-icon>
-      Enroll Staff
-    </button>
+    <div class="text-right">
+      <button class="btn btn-warning btn-rounded my-1 mx-1" (click)="setViewMode(2)"
+        [disabled]="isNewItemMode || isEditMode">
+        <fa-icon [icon]="faPlusCircle"></fa-icon>
+        Enroll Staff
+      </button>
+      <span class="my-1 mx-1">
+        <input type="file" name="fileToUpload" id="file-to-upload" [hidden]="true" #fileInput
+          (change)="onFileChanged(fileInput)"
+          accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+        <label for="file-to-upload" class="btn btn-warning btn-rounded mb-0">
+          <fa-icon [icon]="faCloudUploadAlt"></fa-icon>
+          Upload Staffs
+        </label>
+      </span>
+      <span class="my-1 mx-1">
+        <a href="/assets/templates/staffs_upload.xlsx" target="_blank" class="btn btn-warning btn-rounded">
+          <fa-icon [icon]="faDownload"></fa-icon>
+          Download Staff Upload Template
+        </a>
+      </span>
+    </div>
   </div>
 
   <hr class="socket mt-1" />
-  <app-staff [isNewItemMode]="isNewItemMode" [isEditMode]="isEditMode" [isMainMode]="isMainMode"
-    (changeViewMode)="setViewMode($event)"></app-staff>
+  <div [hidden]="isFileUploadPreview">
+    <app-staff [isNewItemMode]="isNewItemMode" [isEditMode]="isEditMode" [isMainMode]="isMainMode"
+      [refreshStaffs]="refreshStaffs" (refreshed)="onRefreshed($event)" (changeViewMode)="setViewMode($event)">
+    </app-staff>
+  </div>
+  <div [hidden]="!isFileUploadPreview">
+    <div class="card rounded">
+      <div class="card-header bg-white border-0 rounded mb-0">
+        <h5 class="card-title mb-0">
+          <fa-icon [icon]="faCloudUploadAlt"></fa-icon>
+          File Upload Preview
+        </h5>
+      </div>
+      <div class="card-body scrollable">
+        <table class="table table-bordered" style="width: 2000px;">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Surname</th>
+              <th>Firstname</th>
+              <th>Othername</th>
+              <th>Gender</th>
+              <th>Class</th>
+              <th>Department</th>
+              <th>Designation</th>
+              <th>Level</th>
+              <th>Grade</th>
+              <th>SalaryStructure</th>
+              <th>DateOfEmp</th>
+              <th>DateOfRet</th>
+              <th>Bank</th>
+              <th>Account No</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let staff of staffs; index as i">
+              <td>{{i+1}}</td>
+              <td>{{staff.Surname}}</td>
+              <td>{{staff.Firstname}}</td>
+              <td>{{staff.Othername}}</td>
+              <td>{{staff.Gender}}</td>
+              <td>{{staff.Class}}</td>
+              <td>{{staff.Department}}</td>
+              <td>{{staff.Designation}}</td>
+              <td>{{staff.Level}}</td>
+              <td>{{staff.Grade}}</td>
+              <td>{{staff.SalaryStructure}}</td>
+              <td>{{staff.DateOfEmp}}</td>
+              <td>{{staff.DateOfRet}}</td>
+              <td>{{staff.Bank}}</td>
+              <td>{{staff.AccountNo}}</td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+      <div class="card-footer text-center bg-white border-0 rounded">
+        <div class="text-center">
+          <button class="btn btn-danger btn-rounded mr-1" (click)="setViewMode(0)">
+            <span class="mr-1">Cancel</span>
+            <fa-icon [icon]="faTimesCircle"></fa-icon>
+          </button>
+          <button class="btn btn-success btn-rounded" (click)="onSaveUpload()">
+            <span class="mr-1">Continue</span>
+            <fa-icon [icon]="faCheckCircle"></fa-icon>
+          </button>
+        </div>
+        <p class="text-info mt-2" *ngIf="isProcessing">
+          <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>
+          Processing request
+        </p>
+      </div>
+    </div>
+  </div>
 </div>

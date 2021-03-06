@@ -107,7 +107,7 @@ export class MiscellanousFormComponent implements OnInit {
   }
 
   resetProfile() {
-    this.miscProfile = new Miscellanous(null, null, null, null, null);
+    this.miscProfile = new Miscellanous();
   }
 
   ngOnInit() {

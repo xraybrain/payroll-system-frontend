@@ -23,6 +23,19 @@ export class SalaryService {
     );
   }
 
+  getSummary(
+    pid: number
+  ): Observable<
+    Feedback<{
+      totalMiscellanous: [];
+      totalStaffs: null;
+      totalStaffsGroup: [];
+      totalSalary: null;
+    }>
+  > {
+    return this.coreService.getData(`${this.apiUrl}summary/?pid=${pid}`);
+  }
+
   calculateSalary(formData: {
     payrollId: number;
   }): Observable<Feedback<Salary>> {

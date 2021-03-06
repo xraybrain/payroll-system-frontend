@@ -50,7 +50,9 @@ export class BankFormComponent implements OnInit {
         } else {
           this.notify.showWarning(response.message, "Operation failed");
           console.log(response);
-          this.formErrors = response.result || this.resetFormError();
+          response.result
+            ? (this.formErrors = response.result)
+            : this.resetFormError();
         }
       },
       (reason) => {

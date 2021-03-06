@@ -1,3 +1,8 @@
+<div class="text-center text-sm-right mb-1">
+  <a href="/assets/templates/salary_structure.xlsx" target="_blank" class="btn btn-warning btn-rounded">
+    Download Salary Structure Upload Template
+  </a>
+</div>
 <!-- New Item Form -->
 <div class="card rounded">
   <div class="card-header bg-white rounded">
@@ -36,7 +41,7 @@
               <input type="file" name="fileToUpload" id="file-to-upload" [hidden]="true" #fileInput
                 (change)="onFileChanged(fileInput)"
                 accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
-              <label for="file-to-upload" class="btn btn-warning btn-rounded">
+              <label for="file-to-upload" class="btn btn-block btn-warning btn-rounded">
                 <fa-icon [icon]="faFolder"></fa-icon>
                 Browse folder
               </label>

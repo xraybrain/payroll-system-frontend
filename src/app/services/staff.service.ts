@@ -25,12 +25,23 @@ export class StaffService {
     return this.coreService.postUploadData(formData, this.apiUrl);
   }
 
+  saveUpload(formData: FormData): Observable<Feedback<Staff[]>> {
+    return this.coreService.postUploadData(formData, `${this.apiUrl}upload/`);
+  }
+
   update(formData: Staff): Observable<Feedback<Staff>> {
     return this.coreService.putData(formData, this.apiUrl);
   }
 
   delete(formData: Staff): Observable<Feedback<Staff>> {
     return this.coreService.deleteData(formData.id, this.apiUrl);
+  }
+
+  updatePassport(formData: FormData): Observable<Feedback<Staff>> {
+    return this.coreService.postUploadData(
+      formData,
+      `${this.apiUrl}change/passport`
+    );
   }
 
   getDashboardSummary(): Observable<Feedback<any>> {

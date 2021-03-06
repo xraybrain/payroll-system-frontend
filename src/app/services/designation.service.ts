@@ -8,8 +8,18 @@ import { CoreService } from "./core.service";
   providedIn: "root",
 })
 export class DesignationService {
-  private apiUrl = "api/departments/designations/";
+  private apiUrl = "api/designations/";
   constructor(private coreService: CoreService) {}
+
+  getAll(
+    page = 1,
+    searchquery = "",
+    paginate = true
+  ): Observable<Feedback<Designation[]>> {
+    return this.coreService.getData(
+      `${this.apiUrl}?page=${page}&searchquery=${searchquery}&paginate=${paginate}`
+    );
+  }
 
   save(formData: Designation): Observable<Feedback<Designation>> {
     return this.coreService.postData(formData, this.apiUrl);

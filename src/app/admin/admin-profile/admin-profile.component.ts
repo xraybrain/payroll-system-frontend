@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { faSpinner, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faSpinner, faUser, faUserAlt } from "@fortawesome/free-solid-svg-icons";
 import { ViewModes } from "src/app/models/app-enums";
 import { Staff } from "src/app/models/staff.models";
 import { AuthService } from "src/app/services/auth.service";
@@ -12,7 +12,7 @@ import { NotificationService } from "src/app/services/notification.service";
   styleUrls: ["./admin-profile.component.css"],
 })
 export class AdminProfileComponent implements OnInit {
-  faUser = faUser;
+  faUser = faUserAlt;
   faSpinner = faSpinner;
 
   isEditMode: boolean;
@@ -22,6 +22,7 @@ export class AdminProfileComponent implements OnInit {
   staffProfile: Staff = new Staff();
 
   isLoading = false;
+  title = "Create Account Profile";
 
   constructor(
     public authService: AuthService,
@@ -52,6 +53,7 @@ export class AdminProfileComponent implements OnInit {
           if (response.result) {
             this.staffProfile = response.result;
             this.setViewMode(ViewModes.EditView);
+            this.title = "";
           } else {
             let { login } = this.authService.decodeToken();
             this.staffProfile.loginId = login;

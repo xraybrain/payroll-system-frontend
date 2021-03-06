@@ -1,0 +1,91 @@
+ <div class="row" id="printable">
+   <div class="col-12 mb-2">
+     <div class="card rounded">
+       <div class="card-body">
+         <h5>Salary Summary</h5>
+         <hr />
+
+         <h6>
+           Allowance & Deductions
+         </h6>
+         <table class="table table-bordered table-hover table-sm">
+           <thead>
+             <tr>
+               <th>#</th>
+               <th>Title</th>
+               <th>Sub Total Amount (NGN)</th>
+             </tr>
+           </thead>
+           <tbody>
+             <tr *ngFor="let misc of summary.totalMiscellanous; index as i">
+               <td>
+                 {{i+1}}.
+               </td>
+               <td>
+                 {{misc.Miscellanou.title}}
+               </td>
+               <td>
+                 {{misc.total | number}}
+               </td>
+             </tr>
+             <tr>
+               <td></td>
+               <td>Total</td>
+               <td>{{computeTotal(summary.totalMiscellanous) | number}}</td>
+             </tr>
+           </tbody>
+         </table>
+
+         <div class="my-2">
+           <h6>Staffs</h6>
+           <table class="table table-bordered table-hover">
+             <thead>
+               <tr>
+                 <th>#</th>
+                 <th>Title</th>
+                 <th>Total Staffs</th>
+               </tr>
+             </thead>
+             <tbody>
+               <tr *ngFor="let group of summary.totalStaffsGroup; index as i">
+                 <td>
+                   {{i+1}}.
+                 </td>
+                 <td>
+                   {{group.Staff.StaffClass.name}} Staffs
+                 </td>
+                 <td>
+                   {{group.total}}
+                 </td>
+               </tr>
+               <tr>
+                 <td>{{summary.totalStaffsGroup.length + 1}}.</td>
+                 <td>
+                   All Staffs
+                 </td>
+                 <td>
+                   {{summary.totalStaffs}}
+                 </td>
+               </tr>
+             </tbody>
+           </table>
+         </div>
+
+         <div class="mb-2">
+           <table class="table table-bordered">
+             <tbody>
+               <tr>
+                 <th>
+                   Total Salary Paid (NGN)
+                 </th>
+                 <th>
+                   {{summary.totalSalary | number}}
+                 </th>
+               </tr>
+             </tbody>
+           </table>
+         </div>
+       </div>
+     </div>
+   </div>
+ </div>

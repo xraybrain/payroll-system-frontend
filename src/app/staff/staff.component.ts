@@ -38,15 +38,21 @@ export class StaffComponent implements OnInit {
   hasMoreData = false;
   currentPage = 1;
 
+
   @Input()
   isMainMode = false;
   @Input()
   isEditMode = false;
   @Input()
   isNewItemMode = false;
+  @Input()
+  refreshStaffs = false;
 
   @Output()
   changeViewMode: EventEmitter<ViewModes> = new EventEmitter();
+
+  @Output()
+  refreshed: EventEmitter<Boolean> = new EventEmitter();
 
   staffProfile: Staff = new Staff();
 
@@ -154,5 +160,17 @@ export class StaffComponent implements OnInit {
 
   resetData() {
     this.staffProfile = new Staff();
+  }
+
+  ngOnChanges(): void {
+    //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
+    //Add '${implements OnChanges}' to the class.
+    if (this.refreshStaffs) {
+      this.staffs = [];
+      this.loadData();
+      setTimeout(() => {
+        this.refreshed.emit(true);
+      }, 100);
+    }
   }
 }

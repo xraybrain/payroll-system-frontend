@@ -5,6 +5,7 @@ import {
   faFolderOpen,
   faSpinner,
   faTimes,
+  faCloudUploadAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { BehaviorSubject } from "rxjs";
 import { Bank } from "../models/bank.models";
@@ -22,6 +23,7 @@ import { NotificationService } from "../services/notification.service";
 import { SalaryStructureService } from "../services/salary-structure.service";
 import { StaffService } from "../services/staff.service";
 import { ImageSnippet } from "../models/ImageSnippet.model";
+import { DesignationService } from "../services/designation.service";
 
 @Component({
   selector: "app-staff-form",
@@ -33,6 +35,7 @@ export class StaffFormComponent implements OnInit {
   faCalendar = faCalendarAlt;
   faFolder = faFolderOpen;
   faTimes = faTimes;
+  faCloudUploadAlt = faCloudUploadAlt;
 
   @Input()
   isNewItemMode: boolean;
@@ -40,6 +43,8 @@ export class StaffFormComponent implements OnInit {
   isEditMode: boolean;
   @Input()
   staffProfile: Staff;
+  @Input()
+  title: string;
 
   @Output()
   newItem: EventEmitter<Staff> = new EventEmitter();
@@ -80,6 +85,7 @@ export class StaffFormComponent implements OnInit {
     public staffService: StaffService,
     public appService: AppService,
     public deptService: DepartmentService,
+    public dsgService: DesignationService,
     public salaryStrService: SalaryStructureService,
     public bankService: BankService,
     public notify: NotificationService
@@ -117,7 +123,9 @@ export class StaffFormComponent implements OnInit {
         } else {
           this.notify.showWarning(response.message, "Operation failed");
           console.log(response);
-          this.formErrors = response.result || this.resetFormError();
+          response.result
+            ? (this.formErrors = response.result)
+            : this.resetFormError();
         }
       },
       (reason) => {
@@ -150,6 +158,35 @@ export class StaffFormComponent implements OnInit {
         }
       },
       (reason) => {
+        console.log(reason);
+        this.notify.showError("Unable to contact server.", "Operation failed");
+      },
+      () => {
+        this.isProcessing = false;
+      }
+    );
+  }
+
+  changePassport() {
+    if (this.isProcessing) return;
+    this.isProcessing = true;
+    let tid = this.notify.showProcessing("Updating");
+
+    this.form.append("formData", JSON.stringify({ id: this.staffProfile.id }));
+    this.staffService.updatePassport(this.form).subscribe(
+      (response) => {
+        this.notify.hideProcessing(tid);
+        this.formErrors = response.result || {};
+        if (response.success) {
+          this.notify.showSuccess(response.message, "success");
+          this.itemUpdate.emit(response.result);
+        } else {
+          this.notify.showError(response.message, "Operation failed");
+        }
+      },
+      (reason) => {
+        this.isProcessing = false;
+        this.notify.hideProcessing(tid)
         console.log(reason);
         this.notify.showError("Unable to contact server.", "Operation failed");
       },
@@ -228,6 +265,23 @@ export class StaffFormComponent implements OnInit {
       }
     );
 
+    this.dsgService.getAll(1, "", false).subscribe(
+      (response) => {
+        if (response.success) {
+          this.designations = response.result;
+        } else {
+          this.notify.showWarning(response.message, "Operation failed");
+        }
+      },
+      (reason) => {
+        console.log(reason);
+        this.notify.showError(
+          "We encountered a problem while contacting server",
+          "Operation failed"
+        );
+      }
+    );
+
     this.salaryStrService.getAll(1, "", false).subscribe(
       (response) => {
         if (response.success) {
@@ -261,7 +315,6 @@ export class StaffFormComponent implements OnInit {
       if (profile && profile.dateOfEmp) {
         this.setDateOfRet(profile.dateOfRet);
       }
-      this.setDeginations();
     });
   }
 
@@ -309,17 +362,11 @@ export class StaffFormComponent implements OnInit {
     };
   }
 
-  setDeginations() {
-    let dept = this.departments.find((d) => d.id == this.staffProfile.deptId);
-    if (dept) {
-      this.designations = dept.Designations;
-    }
-  }
-
   resetProfile() {
     this.staffProfile = new Staff();
     this.dateOfEmp = null;
     this.dateOfRet = null;
+    this.selectedImage = null;
   }
 
   onFileChanged(imageInput) {

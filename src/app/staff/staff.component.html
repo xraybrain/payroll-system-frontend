@@ -1,109 +1,105 @@
 <div class="row flex-wrap-reverse">
   <div class="col-12 mb-2" [hidden]="!isMainMode">
-    <div class="card">
-      <div class="card-header bg-white">
-        <div>
-          <form class="w-100">
-            <div class="form-control form-control-custom d-flex">
-              <input type="search" name="searchquery" placeholder="Search staff by surname, firstname or othername."
-                [(ngModel)]="searchquery" autocomplete="off" />
-              <button class="btn my-0 py-0" (click)="onSearch()">
-                <fa-icon [icon]="faSearch"></fa-icon>
-              </button>
-            </div>
-          </form>
+    <div class="mb-3">
+      <form class="w-100">
+        <div class="form-control form-control-custom d-flex">
+          <input type="search" name="searchquery" placeholder="Search staff by surname, firstname or othername."
+            [(ngModel)]="searchquery" autocomplete="off" />
+          <button class="btn my-0 py-0" (click)="onSearch()">
+            <fa-icon [icon]="faSearch"></fa-icon>
+          </button>
         </div>
-      </div>
-      <div class="card-body scrollable">
-        <table class="table table-striped table-hover table-lg small">
-          <thead class="text-muted">
-            <tr>
-              <th>#</th>
-              <th>Name</th>
-              <th>Department</th>
-              <th>Designation</th>
-              <th>Class</th>
-              <th>Level & Grade</th>
-              <th>Date of Emp</th>
-              <th>Date of Ret</th>
-              <th class="text-center">
-                <fa-icon [icon]="faCog"></fa-icon>
-                Action
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let staff of staffs; index as i;">
-              <td>{{i+1}}.</td>
-              <td class="text-capitalize">
-                {{staff.surname}}, {{staff.firstname}} {{staff.othername}}
-              </td>
-              <td class="text-capitalize">{{staff.Department.name}}</td>
-              <td class="text-capitalize">{{staff.Designation.name}}</td>
-              <td class="text-capitalize">{{staff.StaffClass.name}}</td>
-              <td class="text-center">{{staff.level}}, {{staff.grade}}</td>
-              <td>{{staff.dateOfEmp | date}}</td>
-              <td>{{staff.dateOfRet | date}}</td>
-              <td class="text-center">
-                <div class="dropdown">
-                  <button class="btn btn-sm btn-info" data-toggle="dropdown">
-                    <div class="d-flex align-items-center">
-                      <span>more</span>
-                      <fa-icon [icon]="faEllipsisH" class="ml-1"></fa-icon>
-                    </div>
-                  </button>
-                  <div class="dropdown-menu">
-                    <label href="#" class="dropdown-item" (click)="onViewProfile(staff)">
-                      <div class="d-flex align-items-center">
-                        <span class="mr-2">
-                          <fa-icon [icon]="faUser" class="mr-2 text-primary"></fa-icon>
-                        </span>
-                        <small>
-                          <span class="d-block">Staff profile</span>
-                          <span class="d-block">View staff profile details</span>
-                        </small>
-                      </div>
-                    </label>
-                    <label class="dropdown-item" (click)="onEdit(staff)">
-                      <div class="d-flex align-items-center">
-                        <span class="mr-2">
-                          <fa-icon [icon]="faEdit" class="text-info"></fa-icon>
-                        </span>
-                        <small>
-                          <span class="d-block">Edit staff details</span>
-                          <span class="d-block">Change this staff details</span>
-                        </small>
-                      </div>
-                    </label>
-                    <label class="dropdown-item" (click)="onDelete(staff)">
-                      <div class="d-flex align-items-center">
-                        <span class="mr-2">
-                          <fa-icon [icon]="faTrash" class="text-danger"></fa-icon>
-                        </span>
-                        <small>
-                          Delete staff
-                          <span class="d-block">
-                            Remove this staff information
-                          </span>
-                        </small>
-                      </div>
-                    </label>
+      </form>
+    </div>
+    <div class="scrollable">
+      <table class="table table-bordered table-hover table-lg small">
+        <thead class="text-muted">
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Designation</th>
+            <th>Class</th>
+            <th>Level & Grade</th>
+            <th>Date of Emp</th>
+            <th>Date of Ret</th>
+            <th class="text-center">
+              <fa-icon [icon]="faCog"></fa-icon>
+              Action
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let staff of staffs; index as i;">
+            <td>{{i+1}}.</td>
+            <td class="text-capitalize">
+              {{staff.surname}}, {{staff.firstname}} {{staff.othername}}
+            </td>
+            <td class="text-capitalize">{{staff.Department.name}}</td>
+            <td class="text-capitalize">{{staff.Designation.name}}</td>
+            <td class="text-capitalize">{{staff.StaffClass.name}}</td>
+            <td class="text-center">{{staff.level}}, {{staff.grade}}</td>
+            <td>{{staff.dateOfEmp | date}}</td>
+            <td>{{staff.dateOfRet | date}}</td>
+            <td class="text-center">
+              <div class="dropdown">
+                <button class="btn btn-sm btn-info" data-toggle="dropdown">
+                  <div class="d-flex align-items-center">
+                    <span>more</span>
+                    <fa-icon [icon]="faEllipsisH" class="ml-1"></fa-icon>
                   </div>
+                </button>
+                <div class="dropdown-menu">
+                  <label href="#" class="dropdown-item" (click)="onViewProfile(staff)">
+                    <div class="d-flex align-items-center">
+                      <span class="mr-2">
+                        <fa-icon [icon]="faUser" class="mr-2 text-primary"></fa-icon>
+                      </span>
+                      <small>
+                        <span class="d-block">Staff profile</span>
+                        <span class="d-block">View staff profile details</span>
+                      </small>
+                    </div>
+                  </label>
+                  <label class="dropdown-item" (click)="onEdit(staff)">
+                    <div class="d-flex align-items-center">
+                      <span class="mr-2">
+                        <fa-icon [icon]="faEdit" class="text-info"></fa-icon>
+                      </span>
+                      <small>
+                        <span class="d-block">Edit staff details</span>
+                        <span class="d-block">Change this staff details</span>
+                      </small>
+                    </div>
+                  </label>
+                  <label class="dropdown-item" (click)="onDelete(staff)">
+                    <div class="d-flex align-items-center">
+                      <span class="mr-2">
+                        <fa-icon [icon]="faTrash" class="text-danger"></fa-icon>
+                      </span>
+                      <small>
+                        Delete staff
+                        <span class="d-block">
+                          Remove this staff information
+                        </span>
+                      </small>
+                    </div>
+                  </label>
                 </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
-        <p *ngIf="isLoading" class="text-center mt-2">
-          <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>
-          Loading
-        </p>
+      <p *ngIf="isLoading" class="text-center mt-2">
+        <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>
+        Loading
+      </p>
 
-        <button *ngIf="hasMoreData" class="btn btn-sm btn-outline-info" (click)=loadData(currentPage+1)>
-          Load More...
-        </button>
-      </div>
+      <button *ngIf="hasMoreData" class="btn btn-sm btn-outline-info" (click)=loadData(currentPage+1)>
+        Load More...
+      </button>
     </div>
   </div>
 

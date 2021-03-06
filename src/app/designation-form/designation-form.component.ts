@@ -31,11 +31,9 @@ export class DesignationFormComponent implements OnInit {
     name: null,
   };
   isProcessing = false;
-  departments: Department[] = [];
 
   constructor(
     public dsgService: DesignationService,
-    public deptService: DepartmentService,
     public notify: NotificationService
   ) {}
 
@@ -53,7 +51,9 @@ export class DesignationFormComponent implements OnInit {
         } else {
           this.notify.showWarning(response.message, "Operation failed");
           console.log(response);
-          this.formErrors = response.result || this.resetFormError();
+          response.result
+            ? (this.formErrors = response.result)
+            : this.resetFormError();
         }
       },
       (reason) => {
@@ -100,16 +100,5 @@ export class DesignationFormComponent implements OnInit {
     this.dsgProfile = new Designation(null, null);
   }
 
-  ngOnInit() {
-    this.deptService.getAll(1, "", false).subscribe(
-      (response) => {
-        if (response.success) {
-          this.departments = response.result;
-        }
-      },
-      (reason) => {
-        console.log(reason);
-      }
-    );
-  }
+  ngOnInit() {}
 }

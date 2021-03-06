@@ -1,7 +1,16 @@
-<app-staff-form [isNewItemMode]="isNewItemMode" [isEditMode]="isEditMode" [staffProfile]="staffProfile"
-  (newItem)="onNewItem($event)" (itemUpdate)="onUpdate($event)">
-</app-staff-form>
-<div class="text-center text-info" *ngIf="isLoading">
-  <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>
-  Loading profile
+<div class="d-flex justify-content-between align-items-center mb-0 flex-wrap">
+  <h5 class="mr-1 mb-0 text-muted font-style-italic my-2">
+    <fa-icon [icon]="faUser" class="mr-2"></fa-icon>
+    Account Profile
+  </h5>
+</div>
+<hr class="mt-0 pt-0">
+<div>
+  <app-staff-form [isNewItemMode]="isNewItemMode" [isEditMode]="isEditMode" [staffProfile]="staffProfile"
+    (newItem)="onNewItem($event)" (itemUpdate)="onUpdate($event)" [title]="title">
+  </app-staff-form>
+  <div class="text-center text-info" *ngIf="isLoading">
+    <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>
+    Loading profile
+  </div>
 </div>

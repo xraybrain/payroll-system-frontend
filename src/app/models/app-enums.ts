@@ -6,6 +6,8 @@ export enum ViewModes {
   NewItemView,
   BankScheduleView,
   PaymentSlipView,
+  FileUploadPreview,
+  SalarySummary
 }
 
 export enum MessageboxResponse {

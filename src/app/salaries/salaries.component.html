@@ -1,47 +1,70 @@
 <div class="row flex-wrap-reverse">
   <div class="col-12 mb-2" [ngClass]="{'col-md-7 col-lg-8 col-xl-9': !isMainMode}">
-    <div class="card">
-      <div class="card-header bg-white">
-        <div>
-          <form class="w-100">
-            <div class="form-control form-control-custom d-flex">
-              <input type="search" name="searchquery"
-                placeholder="Search salary by staff surname, firstname, or othername." [(ngModel)]="searchquery"
-                autocomplete="off" />
-              <button class="btn my-0 py-0" (click)="onSearch()">
-                <fa-icon [icon]="faSearch"></fa-icon>
-              </button>
-            </div>
-          </form>
-        </div>
+    <div class="row flex-wrap-reverse">
+      <div class="col-12 col-lg-9 mb-2">
+        <form class="w-100">
+          <div class="form-control form-control-custom d-flex">
+            <input type="search" name="searchquery"
+              placeholder="Search salary by staff surname, firstname, or othername." [(ngModel)]="searchquery"
+              autocomplete="off" />
+            <button class="btn my-0 py-0" (click)="onSearch()">
+              <fa-icon [icon]="faSearch"></fa-icon>
+            </button>
+          </div>
+        </form>
       </div>
-      <div class="card-body scrollable p-1">
-        <table class="table small table-bordered table-hover table-lg">
+      <div class="col-12 col-lg-3 mb-2">
+        <label class="btn btn-block btn-success btn-rounded mr-1" (click)="exportAsExcel()">
+          <span>
+            <fa-icon [icon]="faFileExcel"></fa-icon>
+          </span>
+          Export as excel
+          <span *ngIf="isProcessing">
+            <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>
+          </span>
+        </label>
+      </div>
+    </div>
+
+
+    <div class="card">
+      <div class="card-body scrollable">
+        <table class="table small table-bordered table-hover table-xl">
           <thead class="text-muted">
             <tr>
               <th>#</th>
-              <th>Name</th>
-              <th>DOE</th>
+              <th>Surname</th>
+              <th>Firstname</th>
+              <th>Othername</th>
+              <th>DateEmployeed</th>
               <th>Department</th>
               <th>Designation</th>
               <th>Status</th>
-              <th>Allowance & Deductions</th>
+              <th>Consolidated</th>
+              <th *ngFor="let heading of miscHeadings">
+                {{heading}}
+              </th>
               <th>(+)Gross</th>
               <th>(-)Ded.</th>
               <th>Net</th>
-              <th class="text-right">
-                Action
-              </th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let salary of salaries; index as i;">
               <td>{{i+1}}.</td>
               <td class="text-capitalize">
-                {{salary.Staff.surname}},
+                {{salary.Staff.surname}}
+              </td>
+
+              <td class="text-capitalize">
                 {{salary.Staff.firstname}}
+              </td>
+
+              <td class="text-capitalize">
                 {{salary.Staff.othername}}
               </td>
+
               <td>{{salary.Staff.dateOfEmp | date}}</td>
               <td>{{salary.Staff.Department.name}}</td>
               <td>{{salary.Staff.Designation.name}}</td>
@@ -49,19 +72,17 @@
                 {{salary.status}}
               </td>
               <td>
-                <table class="table table-bordered bg-white">
-                  <ng-container *ngFor="let misc of salary.SalaryMiscellanous">
-                    <tr *ngIf="misc.subTotalAmount > 0">
-                      <td>
-                        {{misc.Miscellanou.title}}
-                      </td>
-                      <td>
-                        {{misc.subTotalAmount}}
-                      </td>
-                    </tr>
-                  </ng-container>
-                </table>
+                {{salary.consolidated}}
               </td>
+
+              <ng-container *ngFor="let misc of normalizeMisc(salary.SalaryMiscellanous)">
+                <td>
+                  {{misc.subTotalAmount}}
+                </td>
+              </ng-container>
+
+
+
               <td>
                 {{salary.grossPay | number}}
               </td>
@@ -108,6 +129,64 @@
           </tbody>
         </table>
 
+
+        <!-- <div class="row">
+          <div class="col-9 col-sm-10 col-lg-11">
+            <div class="scrollable">
+
+            </div>
+          </div> -->
+        <!-- <div class="col-3 col-sm-2 col-lg-1">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th class="text-right">
+                    Action
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let salary of salaries; index as i;">
+                  <td class="dropdown text-right p-2">
+                    <label class="btn btn-sm mb-0 btn-info" data-toggle="dropdown">
+                      more
+                    </label>
+                    <div class="dropdown-menu dropdown-menu-right">
+                      <label class="dropdown-item" (click)="onEdit(salary)">
+                        <div class="d-flex align-items-center">
+                          <span class="mr-2">
+                            <fa-icon [icon]="faEdit" class="text-info"></fa-icon>
+                          </span>
+                          <small>
+                            <span class="d-block">Edit details</span>
+                            <span class="d-block">
+                              Change this salary details
+                            </span>
+                          </small>
+                        </div>
+                      </label>
+                      <label class="dropdown-item" (click)="onDelete(salary)">
+                        <div class="d-flex align-items-center">
+                          <span class="mr-2">
+                            <fa-icon [icon]="faTrash" class="text-danger"></fa-icon>
+                          </span>
+                          <small>
+                            <span class="d-block">Delete salary</span>
+                            <span class="d-block">
+                              Remove this salary completely
+                            </span>
+                          </small>
+                        </div>
+                      </label>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div> -->
+        <!-- </div> -->
+
+
         <p *ngIf="isLoading" class="text-center mt-2">
           <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>
           Loading
@@ -116,6 +195,10 @@
         <button *ngIf="hasMoreData" class="btn btn-sm btn-outline-info" (click)=loadData(currentPage+1)>
           Load More...
         </button>
+      </div>
+
+      <div class="card-footer bg-white border-0 text-right p-1 m-0">
+
       </div>
     </div>
   </div>

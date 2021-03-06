@@ -1,17 +1,21 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import {
+  faCalculator,
   faChevronCircleLeft,
   faChevronCircleRight,
   faList,
   faListAlt,
   faPlusCircle,
   faPrint,
+  faReceipt,
+  faSignature,
   faThList,
   faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 import { AppConfig } from "src/app/config/app-config";
 import { ViewModes } from "src/app/models/app-enums";
+import { ImageSnippet } from "src/app/models/ImageSnippet.model";
 import { Payroll } from "src/app/models/payroll.models";
 import { NotificationService } from "src/app/services/notification.service";
 import { PayrollService } from "src/app/services/payroll.service";
@@ -30,12 +34,17 @@ export class ManageSalariesComponent implements OnInit {
   faListAlt = faListAlt;
   faPrint = faPrint;
   faChevronCircleLeft = faChevronCircleLeft;
+  faSignature = faSignature;
+  faReceipt = faReceipt;
+  faCalculator = faCalculator;
 
   isEditMode: boolean;
   isMainMode: boolean;
   isNewItemMode: boolean;
   isBankScheduleMode: boolean;
   isPayslipMode: boolean;
+  isSummaryMode: boolean;
+
   refreshSalaries: boolean;
   payrollId: number;
   payroll: Payroll = new Payroll(null);
@@ -43,6 +52,8 @@ export class ManageSalariesComponent implements OnInit {
   isCalculating = false;
   isProcessing = false;
   currentLabel = "Salaries";
+
+  signature: ImageSnippet = null;
 
   constructor(
     public route: ActivatedRoute,
@@ -58,9 +69,11 @@ export class ManageSalariesComponent implements OnInit {
     this.isNewItemMode = mode === ViewModes.NewItemView;
     this.isBankScheduleMode = mode === ViewModes.BankScheduleView;
     this.isPayslipMode = mode === ViewModes.PaymentSlipView;
+    this.isSummaryMode = mode === ViewModes.SalarySummary;
 
     if (this.isBankScheduleMode) this.currentLabel = "Bank Schedule";
     if (this.isPayslipMode) this.currentLabel = "Staffs Payslips";
+    if (this.isSummaryMode) this.currentLabel = "Salary Summary";
   }
 
   onBackToMain() {
@@ -118,5 +131,17 @@ export class ManageSalariesComponent implements OnInit {
 
   print(target: string) {
     AppConfig.print(target);
+  }
+
+  onFileChanged(imageInput) {
+    let file: File = imageInput.files[0];
+    let reader: FileReader = new FileReader();
+
+    reader.addEventListener("load", (event) => {
+      this.signature = new ImageSnippet(event.target["result"], file);
+    });
+    if (file instanceof Blob) {
+      reader.readAsDataURL(file);
+    }
   }
 }

@@ -48,6 +48,9 @@ import { ManageSalariesComponent } from "./admin/manage-salaries/manage-salaries
 import { BankScheduleComponent } from "./bank-schedule/bank-schedule.component";
 import { PayslipComponent } from "./payslip/payslip.component";
 import { ForgotPasswordComponent } from "./forgot-password/forgot-password.component";
+import { SalarySummaryComponent } from './salary-summary/salary-summary.component';
+import { ResetPasswordModalComponent } from './reset-password-modal/reset-password-modal.component';
+
 // this function retrieves the token
 export function tokenGetter() {
   return localStorage.getItem("access_token");
@@ -89,8 +92,10 @@ export function tokenGetter() {
     BankScheduleComponent,
     PayslipComponent,
     ForgotPasswordComponent,
+    SalarySummaryComponent,
+    ResetPasswordModalComponent,
   ],
-  entryComponents: [MessageboxComponent, ProfilePopupComponent],
+  entryComponents: [MessageboxComponent, ProfilePopupComponent, ResetPasswordModalComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

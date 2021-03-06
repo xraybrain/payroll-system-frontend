@@ -22,7 +22,7 @@ export class MessageboxService {
     modalInstance.componentInstance.settings = {
       message,
       title,
-      type: MessageboxType.WARNING,
+      type,
     };
 
     return modalInstance;

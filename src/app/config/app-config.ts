@@ -23,6 +23,17 @@ export class AppConfig {
         th{
           text-align: left;
         }
+        .print-row {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          width: 1000px;
+          max-width: 1000px;
+          flex-wrap: wrap;
+        }
+        .print-col-4 {
+          width: 32%;
+        }
       </style>
     </head>`;
     body = title + body;

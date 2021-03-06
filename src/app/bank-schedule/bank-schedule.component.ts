@@ -6,6 +6,10 @@ import { MessageboxService } from "../services/messagebox.service";
 import { NotificationService } from "../services/notification.service";
 import { SalaryService } from "../services/salary.service";
 import { ToWords } from "to-words";
+import { ExportExcelService } from "../services/export-excel.service";
+import { ExcelData } from "../models/excel-data";
+import { BankSchedule } from "../models/bank-schedule.models";
+import { faFileExcel, faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 @Component({
   selector: "app-bank-schedule",
@@ -20,11 +24,15 @@ export class BankScheduleComponent implements OnInit {
   hasMoreData = false;
   currentPage = 1;
 
+  faSpinner = faSpinner;
+  faFileExcel = faFileExcel;
+
   constructor(
     public salaryService: SalaryService,
     public notify: NotificationService,
     public messageBox: MessageboxService,
-    public route: ActivatedRoute
+    public route: ActivatedRoute,
+    public exportExcelService: ExportExcelService
   ) {}
 
   ngOnInit() {
@@ -72,17 +80,19 @@ export class BankScheduleComponent implements OnInit {
     };
 
     for (let salary of salaries) {
-      if (bank === salary.bankId) {
-        group.Salaries.push(salary);
-      } else {
-        if (group.Salaries.length > 0 && group.Bank) {
-          normalized.push(group);
+      if (salary.Staff.Bank) {
+        if (bank === salary.bankId) {
+          group.Salaries.push(salary);
+        } else {
+          if (group.Salaries.length > 0 && group.Bank) {
+            normalized.push(group);
+          }
+          group = {
+            Salaries: [salary],
+            Bank: salary.Staff.Bank.name,
+          };
+          bank = salary.bankId;
         }
-        group = {
-          Salaries: [salary],
-          Bank: salary.Staff.Bank.name,
-        };
-        bank = salary.bankId;
       }
     }
     if (group.Salaries.length > 0 && group.Bank) {
@@ -117,5 +127,33 @@ export class BankScheduleComponent implements OnInit {
 
   print(target: string) {
     AppConfig.print(target);
+  }
+
+  isProcessing = false;
+  exportAsExcel(schedule: { Salaries: Salary[]; Bank: string }) {
+    if (this.isProcessing) return;
+    let excelData = new ExcelData(
+      `${schedule.Bank} - Imo State Polytechnic Staff Salary Schedule`,
+      ["Surname", "Firstname", "Othername", "Account No", "Salary"],
+      []
+    );
+    for (let salary of schedule.Salaries) {
+      excelData.data.push([
+        salary.Staff.surname,
+        salary.Staff.firstname,
+        salary.Staff.othername,
+        salary.Staff.accountNo,
+        salary.netPay,
+      ]);
+    }
+    excelData.data.push([]);
+    excelData.data.push([
+      this.amountInWords(this.calculateTotal(schedule.Salaries)),
+    ]);
+
+    this.isProcessing = true;
+    this.exportExcelService
+      .exportExcel(excelData)
+      .then(() => (this.isProcessing = false));
   }
 }

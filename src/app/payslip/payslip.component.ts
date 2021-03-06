@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { AppConfig } from "../config/app-config";
 import { Salary } from "../models/salary.models";
@@ -8,6 +8,7 @@ import { SalaryService } from "../services/salary.service";
 import { MiscellanousType } from "../models/app-enums";
 import { SalaryMisc } from "../models/salary-misc";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { ImageSnippet } from "../models/ImageSnippet.model";
 @Component({
   selector: "app-payslip",
   templateUrl: "./payslip.component.html",
@@ -21,6 +22,9 @@ export class PayslipComponent implements OnInit {
   hasMoreData = false;
   currentPage = 1;
   faSpinner = faSpinner;
+
+  @Input('signature')
+  signature: ImageSnippet;
 
   constructor(
     public salaryService: SalaryService,

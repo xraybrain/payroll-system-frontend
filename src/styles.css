@@ -149,7 +149,8 @@ footer {
 }
 
 .table-xl {
-  min-width: 1200px;
+  min-width: 2000px;
+  max-width: 2500px;
 }
 
 .avatar {

@@ -129,4 +129,17 @@ export class AuthService {
   public getAuthToken() {
     return `authorization=Bearer ${localStorage.getItem("access_token")}`;
   }
+
+  public resetPassword(formData: {
+    password: string;
+    confirmPassword: string;
+  }) {
+    return this.http.post<Feedback<boolean>>(
+      baseUrl.host + `api/auth/reset/password/`,
+      {
+        formData,
+        authorization: `Bearer ${localStorage.getItem("access_token")}`,
+      }
+    );
+  }
 }

@@ -31,11 +31,17 @@ export class DepartmentComponent implements OnInit {
   faEllipsisH = faEllipsisH;
 
   departments: Department[] = [];
+  designations: Designation[] = [];
 
   isLoading = false;
+  isLoadingDsg = false;
   searchquery = "";
   hasMoreData = false;
   currentPage = 1;
+
+  dsgSearchquery = "";
+  dsgHasMoreData = false;
+  dsgCurrentPage = 1;
 
   @Input()
   isMainMode = false;
@@ -63,6 +69,7 @@ export class DepartmentComponent implements OnInit {
 
   ngOnInit() {
     this.loadData();
+    this.loadDsgData();
   }
 
   loadData(page = 1) {
@@ -176,10 +183,7 @@ export class DepartmentComponent implements OnInit {
   }
 
   onNewDsgItem(dsg: Designation) {
-    let dept = this.departments.find((d) => d.id === dsg.deptId);
-    if (dept) {
-      dept.Designations.push(dsg);
-    }
+    this.designations.push(dsg);
   }
 
   resetData() {
@@ -236,15 +240,9 @@ export class DepartmentComponent implements OnInit {
           this.dsgService.delete(dsg).subscribe(
             (response) => {
               if (response.success) {
-                let dept = this.departments.find((d) => d.id === dsg.deptId);
-                if (dept) {
-                  console.log(dept);
-                  let index = dept.Designations.findIndex(
-                    (d) => d.id === dsg.id
-                  );
-                  if (index > -1) {
-                    dept.Designations.splice(index, 1);
-                  }
+                let index = this.designations.findIndex((d) => d.id === dsg.id);
+                if (index > -1) {
+                  this.designations.splice(index, 1);
                 }
                 this.notify.showSuccess(response.message, "Success");
               } else {
@@ -264,5 +262,38 @@ export class DepartmentComponent implements OnInit {
         }
       })
       .catch((reason) => {});
+  }
+
+  loadDsgData(page = 1) {
+    if (this.isLoadingDsg) return;
+    this.isLoadingDsg = true;
+
+    this.dsgService.getAll(page, this.searchquery).subscribe(
+      (response) => {
+        if (response.result) {
+          this.designations = this.designations.concat(response.result);
+          this.dsgHasMoreData = response.totalPages > response.currentPage;
+          this.dsgCurrentPage = Number(response.currentPage);
+        } else {
+          // notify
+          this.notify.showWarning(response.message, "Loading Failed");
+        }
+      },
+      (reason) => {
+        this.notify.showError(
+          "we encountered a problem while contacting server",
+          "Operation failed"
+        );
+        this.isLoadingDsg = false;
+      },
+      () => {
+        this.isLoadingDsg = false;
+      }
+    );
+  }
+
+  onSearchDsg() {
+    this.designations = [];
+    this.loadDsgData();
   }
 }

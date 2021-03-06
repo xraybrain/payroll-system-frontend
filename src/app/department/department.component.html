@@ -1,7 +1,11 @@
 <div class="row flex-wrap-reverse">
   <div class="col-12 mb-2" [ngClass]="{'col-md-7 col-lg-8 col-xl-9': !isMainMode}">
-    <div class="card">
+    <div class="card rounded">
       <div class="card-header bg-white">
+        <h5 class="card-title">
+          Departments
+        </h5>
+        <hr>
         <div>
           <form class="w-100">
             <div class="form-control form-control-custom d-flex">
@@ -15,12 +19,14 @@
         </div>
       </div>
       <div class="card-body scrollable">
-        <table class="table table-striped table-hover table-md">
+        <table class="table table-bordered table-hover table-md">
           <thead class="text-muted">
             <tr>
               <th>#</th>
               <th>Name</th>
-              <th>Designations</th>
+              <th>Date Created</th>
+              <th>Last Modified</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -36,97 +42,56 @@
                       {{dept.name}}
                     </label>
                   </div>
-                  <div class="dropdown">
-                    <label class="btn btn-sm btn-light" data-toggle="dropdown">
-                      <fa-icon [icon]="faEllipsisH"></fa-icon>
-                    </label>
-                    <div class="dropdown-menu dropdown-menu-right">
-                      <a class="dropdown-item" (click)="switchToEditMode(dept)">
-                        <span class="d-flex align-items-center">
-                          <fa-icon [icon]="faEdit" class="text-info"></fa-icon>
-                          <span class="ml-2 d-inline-block">
-                            <span class="d-block">
-                              <small>
-                                Edit Department
-                              </small>
-                            </span>
-                            <span class="d-block">
-                              <small>
-                                Change this department name
-                              </small>
-                            </span>
-                          </span>
-                        </span>
-                      </a>
-                      <a class="dropdown-item" (click)="onDelete(dept)">
-                        <span class="d-flex align-items-center">
-                          <fa-icon [icon]="faTrash" class="text-danger"></fa-icon>
-                          <span class="ml-2 d-inline-block">
-                            <span class="d-block">
-                              <small>
-                                Delete department
-                              </small>
-                            </span>
-                            <span class="d-block">
-                              <small>
-                                Remove this department
-                              </small>
-                            </span>
-                          </span>
-                        </span>
-                      </a>
-                    </div>
-                  </div>
                 </div>
               </td>
               <td>
-                <ul class="list-group">
-                  <li class="list-group-item" *ngFor="let dsg of dept.Designations; index as j">
-                    <div class="d-flex align-items-center justify-content-between">
-                      <div>
-                        <input type="text" class="form-control form-control-custom" placeholder="Name of designation"
-                          autocomplete="off" [(ngModel)]="tempItem.name" *ngIf="dsg.inEditMode" (blur)="updateDsg(dsg)"
-                          autofocus="true" />
-                        <label class="mb-0 p-0" *ngIf="!dsg.inEditMode">
-                          {{j+1}}. {{dsg.name}}
-                        </label>
-                      </div>
-                      <div class="dropdown">
-                        <label class="btn btn-sm btn-light" data-toggle="dropdown">
-                          <fa-icon [icon]="faEllipsisH"></fa-icon>
-                        </label>
-                        <div class="dropdown-menu dropdown-menu-right">
-                          <a class="dropdown-item" (click)="switchToEditMode(dsg)">
-                            <span class="d-flex align-items-center">
-                              <fa-icon [icon]="faEdit" class="text-info"></fa-icon>
-                              <span class="ml-2 d-inline-block">
-                                <span class="d-block">
-                                  <small>Edit designation</small>
-                                </span>
-                                <span class="d-block">
-                                  <small>Change this degination name</small>
-                                </span>
-                              </span>
-                            </span>
-                          </a>
-                          <a class="dropdown-item" (click)="onDeleteDsg(dsg)">
-                            <span class="d-flex align-items-center">
-                              <fa-icon [icon]="faTrash" class="text-danger"></fa-icon>
-                              <span class="ml-2 d-inline-block">
-                                <span class="d-block">
-                                  <small>Delete designation</small>
-                                </span>
-                                <span class="d-block">
-                                  <small>Remove this degination from department</small>
-                                </span>
-                              </span>
-                            </span>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
+                {{dept.createdAt | date:'short'}}
+              </td>
+              <td>
+                {{dept.updatedAt | date:'short'}}
+              </td>
+              <td>
+                <div class="dropdown">
+                  <label class="btn btn-sm btn-light" data-toggle="dropdown">
+                    <fa-icon [icon]="faEllipsisH"></fa-icon>
+                  </label>
+                  <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" (click)="switchToEditMode(dept)">
+                      <span class="d-flex align-items-center">
+                        <fa-icon [icon]="faEdit" class="text-info"></fa-icon>
+                        <span class="ml-2 d-inline-block">
+                          <span class="d-block">
+                            <small>
+                              Edit Department
+                            </small>
+                          </span>
+                          <span class="d-block">
+                            <small>
+                              Change this department name
+                            </small>
+                          </span>
+                        </span>
+                      </span>
+                    </a>
+                    <a class="dropdown-item" (click)="onDelete(dept)">
+                      <span class="d-flex align-items-center">
+                        <fa-icon [icon]="faTrash" class="text-danger"></fa-icon>
+                        <span class="ml-2 d-inline-block">
+                          <span class="d-block">
+                            <small>
+                              Delete department
+                            </small>
+                          </span>
+                          <span class="d-block">
+                            <small>
+                              Remove this department
+                            </small>
+                          </span>
+                        </span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
               </td>
             </tr>
           </tbody>
@@ -138,6 +103,104 @@
         </p>
 
         <button *ngIf="hasMoreData" class="btn btn-sm btn-outline-info" (click)=loadData(currentPage+1)>
+          Load More...
+        </button>
+      </div>
+    </div>
+
+    <div class="card my-2 rounded">
+      <div class="card-header bg-white">
+        <h5 class="card-title">
+          Designations
+        </h5>
+        <hr>
+        <div>
+          <form class="w-100">
+            <div class="form-control form-control-custom d-flex">
+              <input type="search" name="searchquery" placeholder="Search designation by name."
+                [(ngModel)]="searchquery" autocomplete="off" />
+              <button class="btn my-0 py-0" (click)="onSearchDsg()">
+                <fa-icon [icon]="faSearch"></fa-icon>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="card-body scrollable">
+        <table class="table table-bordered table-hover table-md">
+          <thead class="text-muted">
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Date Created</th>
+              <th>Last Modified</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let dsg of designations; index as i;">
+              <td>{{i+1}}.</td>
+              <td class="text-capitalize">
+                <div>
+                  <input type="text" class="form-control form-control-custom" placeholder="Name of designation"
+                    autocomplete="off" [(ngModel)]="tempItem.name" *ngIf="dsg.inEditMode" (blur)="updateDsg(dsg)"
+                    autofocus="true" />
+                  <label class="mb-0 p-0" *ngIf="!dsg.inEditMode">
+                    {{dsg.name}}
+                  </label>
+                </div>
+              </td>
+              <td>
+                {{dsg.createdAt | date:'short'}}
+              </td>
+              <td>
+                {{dsg.updatedAt | date:'short'}}
+              </td>
+              <td>
+                <div class="dropdown">
+                  <label class="btn btn-sm btn-light" data-toggle="dropdown">
+                    <fa-icon [icon]="faEllipsisH"></fa-icon>
+                  </label>
+                  <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" (click)="switchToEditMode(dsg)">
+                      <span class="d-flex align-items-center">
+                        <fa-icon [icon]="faEdit" class="text-info"></fa-icon>
+                        <span class="ml-2 d-inline-block">
+                          <span class="d-block">
+                            <small>Edit designation</small>
+                          </span>
+                          <span class="d-block">
+                            <small>Change this degination name</small>
+                          </span>
+                        </span>
+                      </span>
+                    </a>
+                    <a class="dropdown-item" (click)="onDeleteDsg(dsg)">
+                      <span class="d-flex align-items-center">
+                        <fa-icon [icon]="faTrash" class="text-danger"></fa-icon>
+                        <span class="ml-2 d-inline-block">
+                          <span class="d-block">
+                            <small>Delete designation</small>
+                          </span>
+                          <span class="d-block">
+                            <small>Remove this degination from department</small>
+                          </span>
+                        </span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p *ngIf="isLoadingDsg" class="text-center mt-2">
+          <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>
+          Loading
+        </p>
+
+        <button *ngIf="dsgHasMoreData" class="btn btn-sm btn-outline-info" (click)=loadDsgData(dsgCurrentPage+1)>
           Load More...
         </button>
       </div>
